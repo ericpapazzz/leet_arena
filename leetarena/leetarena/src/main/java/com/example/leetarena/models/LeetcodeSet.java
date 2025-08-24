@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "leetcodeSet")
+@Table(name = "leetcode_set")
 public class LeetcodeSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
