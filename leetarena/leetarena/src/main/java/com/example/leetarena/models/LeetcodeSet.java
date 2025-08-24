@@ -7,14 +7,19 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "Leetcode_set")
+@Table(name = "leetcode_set")
 public class LeetcodeSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int leetcodeSet_id;
 
-    @Column(columnDefinition = "TEXT")
-    private String problems;
+    @ManyToMany //Many to many relationship
+    @JoinTable(
+            name = "leetcodeSetProblems",
+            joinColumns = @JoinColumn(name = "leetcodeSetId"),
+            inverseJoinColumns = @JoinColumn(name =  "problemId")
+    )
+    private List<Problem> problemsList;
 
 
 }
