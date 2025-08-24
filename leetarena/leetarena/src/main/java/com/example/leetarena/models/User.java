@@ -5,11 +5,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Data;
 import java.util.List;
 import com.example.leetarena.models.Record;
+import java.util.ArrayList;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 
 @Entity
 @Data
@@ -37,4 +42,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Player> players;
 
+    @ManyToMany
+    @JoinTable(
+        name = "user_product",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> products = new ArrayList<>();
 }

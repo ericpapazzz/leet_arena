@@ -5,8 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Data
@@ -31,4 +34,7 @@ public class Product {
 
     @Column(name = "product_tag")
     private String productTag;
+
+    @ManyToMany(mappedBy = "products")
+    private List<User> users = new ArrayList<>();
 }

@@ -49,4 +49,7 @@ public class ActiveParty {
 
     @ManyToMany(mappedBy = "activePartys")
     private List<Player> players;
+
+    @OneToOne
+    private Summary summary;
 }
