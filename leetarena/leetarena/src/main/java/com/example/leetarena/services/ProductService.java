@@ -75,32 +75,33 @@ public class ProductService {
     }
 
     // Update the product if it is given new assets or values
+public Product updateProduct(Integer id, ProductDTO dto) {
+    Product existingProduct = getProductById(id);
 
-    public Product updateProduct(Integer id, ProductDTO dto) {
-        Product existingProduct = getProductById(id);
-
-        if (dto.getProductName() != null && !dto.getProductName().isEmpty()){
-            productRepository.findByProductName(dto.getProductName()).ifPresent(existing -> {
-                if (!existing.getProduct_id().equals(id)){
-                    throw new RuntimeException("Product with name " + dto.getProductName() + " already exists");
-                }
-            });
-        }
-        if (dto.getProductPrice() != null && dto.getProductPrice() > 0) {
-            existingProduct.setProductPrice(dto.getProductPrice());
-        }
-        if (dto.getProductImg() != null && !dto.getProductImg().isEmpty()) {
-            existingProduct.setProductImg(dto.getProductImg());
-        }
-        if (dto.getProductDescription() != null && !dto.getProductDescription().isEmpty()) {
-            existingProduct.setProductDescription(dto.getProductDescription());
-        }
-        if (dto.getProductTag() != null && !dto.getProductTag().isEmpty()) {
-            existingProduct.setProductTag(dto.getProductTag());
-        }
-
-        return productRepository.save(existingProduct);
+    if (dto.getProductName() != null && !dto.getProductName().isEmpty()) {
+        productRepository.findByProductName(dto.getProductName()).ifPresent(existing -> {
+            if (!existing.getProduct_id().equals(id)){
+                throw new RuntimeException("Product with name " + dto.getProductName() + " already exists");
+            }
+        });
+        existingProduct.setProductName(dto.getProductName());
     }
+
+    if (dto.getProductPrice() != null && dto.getProductPrice() > 0) {
+        existingProduct.setProductPrice(dto.getProductPrice());
+    }
+    if (dto.getProductImg() != null && !dto.getProductImg().isEmpty()) {
+        existingProduct.setProductImg(dto.getProductImg());
+    }
+    if (dto.getProductDescription() != null && !dto.getProductDescription().isEmpty()) {
+        existingProduct.setProductDescription(dto.getProductDescription());
+    }
+    if (dto.getProductTag() != null && !dto.getProductTag().isEmpty()) {
+        existingProduct.setProductTag(dto.getProductTag());
+    }
+
+    return productRepository.save(existingProduct);
+}
 
     // Delete a product by the given id
 

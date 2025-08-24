@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -44,7 +45,7 @@ public class ActivePartyController {
         }
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<ActiveParty> createParty(@RequestBody ActivePartyDTO dto) {
         try {
             return ResponseEntity.ok(activePartyService.createParty(dto));
