@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UserDTO {
     private String username;
-    private int userLeetcoins;
-    // private List<Records> user_records;
+    private String email;
+    private String passwordHash;
 }
