@@ -38,10 +38,12 @@ public class ActiveParty {
     @OneToMany(mappedBy = "activeParty")
     private List<Record> records;
 
-    // @OneToOne
-    // private Integer leetcode_set_id
+    @OneToOne
+    @JoinColumn(name = "leetcode_set_id")
+    private LeetcodeSet leetcodeSet;
 
-    // @OneToOne
-    // private Integer user_id;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
