@@ -2,6 +2,7 @@ package com.example.leetarena.services;
 
 import org.springframework.stereotype.Service;
 
+import com.example.leetarena.dtos.ProductDTO;
 import com.example.leetarena.models.Product;
 import com.example.leetarena.repositories.ProductRepository;
 
@@ -34,50 +35,63 @@ public class ProductService {
 
     //Create a product
     
-    public Product createProduct(Product product) {
+    public Product createProduct(ProductDTO dto) {
+        Product newProduct = new Product();
 
-        if (product.getProductName() == null || product.getProductName().isEmpty()) {
+        if (dto.getProductName() == null || dto.getProductName().isEmpty()) {
             throw new RuntimeException("Invalid product name: Name cannot be null or empty");
+        }else{
+            newProduct.setProductName(dto.getProductName());
         }
 
-        if (product.getProductPrice() == null || product.getProductPrice() <= 0) {
+        if (dto.getProductPrice() == null || dto.getProductPrice() <= 0) {
             throw new RuntimeException("Invalid product price: Price must be greater than 0");
+        }else{
+            newProduct.setProductPrice(dto.getProductPrice());
         }
 
-        if (product.getProductImg() == null || product.getProductImg().isEmpty()) {
+        if (dto.getProductImg() == null || dto.getProductImg().isEmpty()) {
             throw new RuntimeException("Invalid product image: Image cannot be null or empty");
+        }else{
+            newProduct.setProductImg(dto.getProductImg());
         }
 
-        if (productRepository.findByProductName(product.getProductName()).isPresent()) {
-            throw new RuntimeException("Product with name " + product.getProductName() + " already exists");
+        if (dto.getProductDescription() == null || dto.getProductDescription().isEmpty()){
+            throw new RuntimeException("Invalid product Description: Description cannot be null or empty");
+        }else{
+            newProduct.setProductDescription(dto.getProductDescription());
         }
 
-        return productRepository.save(product);
+        if (productRepository.findByProductName(dto.getProductName()).isPresent()) {
+            throw new RuntimeException("Product with name " + dto.getProductName() + " already exists");
+        }
+
+        return productRepository.save(newProduct);
     }
 
     // Update the product if it is given new assets or values
 
-    public Product updateProduct(Integer id, Product product) {
+    public Product updateProduct(Integer id, ProductDTO dto) {
         Product existingProduct = getProductById(id);
 
-        if (product.getProductName() != null && !product.getProductName().isEmpty()){
-            productRepository.findByProductName(product.getProductName()).ifPresent(existing -> {
+        if (dto.getProductName() != null && !dto.getProductName().isEmpty()){
+            productRepository.findByProductName(dto.getProductName()).ifPresent(existing -> {
                 if (!existing.getProduct_id().equals(id)){
-                    throw new RuntimeException("Product with name " + product.getProductName() + " already exists");
+                    throw new RuntimeException("Product with name " + dto.getProductName() + " already exists");
                 }
             });
         }
-        if (product.getProductPrice() != null && product.getProductPrice() > 0) {
-            existingProduct.setProductPrice(product.getProductPrice());
+        if (dto.getProductPrice() != null && dto.getProductPrice() > 0) {
+            existingProduct.setProductPrice(dto.getProductPrice());
         }
-        if (product.getProductImg() != null && !product.getProductImg().isEmpty()) {
-            existingProduct.setProductImg(product.getProductImg());
+        if (dto.getProductImg() != null && !dto.getProductImg().isEmpty()) {
+            existingProduct.setProductImg(dto.getProductImg());
         }
-        if (product.getProductDescription() != null && !product.getProductDescription().isEmpty()) {
-            existingProduct.setProductDescription(product.getProductDescription());
+        if (dto.getProductDescription() != null && !dto.getProductDescription().isEmpty()) {
+            existingProduct.setProductDescription(dto.getProductDescription());
         }
-        if (product.getProductTag() != null && !product.getProductTag().isEmpty()) {
-            existingProduct.setProductTag(product.getProductTag());
+        if (dto.getProductTag() != null && !dto.getProductTag().isEmpty()) {
+            existingProduct.setProductTag(dto.getProductTag());
         }
 
         return productRepository.save(existingProduct);

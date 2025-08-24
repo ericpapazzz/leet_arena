@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.leetarena.models.Product;
+import com.example.leetarena.dtos.ProductDTO;
 import com.example.leetarena.services.ProductService;
 
 import java.util.List;
@@ -35,9 +36,9 @@ public class ProductController {
 
     // Endpoint to create a new product.
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO dto) {
         try {
-            return ResponseEntity.ok(productService.createProduct(product));
+            return ResponseEntity.ok(productService.createProduct(dto));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -45,9 +46,9 @@ public class ProductController {
 
     // Endpoint to update an existing product by its ID.
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO dto) {
         try {
-            return ResponseEntity.ok(productService.updateProduct(id, product));
+            return ResponseEntity.ok(productService.updateProduct(id, dto));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(null);
         }
