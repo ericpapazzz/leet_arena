@@ -4,10 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Data;
 import java.util.List;
+import com.example.leetarena.models.Record;
 
 @Entity
 @Data
@@ -29,7 +31,7 @@ public class User {
     @Column(name = "user_leetcoins")
     private int userLeetcoins;
 
-    // @OneToMany(mappedBy = "user_id")
-    // private List<Records> user_records;
+    @OneToMany(mappedBy = "record_id")
+    private List<Record> user_records;
 
 }

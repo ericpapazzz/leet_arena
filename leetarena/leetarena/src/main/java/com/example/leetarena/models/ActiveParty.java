@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -32,6 +34,9 @@ public class ActiveParty {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
+    @OneToMany(mappedBy = "activePartyId")
+    private List<Record> records;
 
     // @OneToOne
     // private Integer leetcode_set_id

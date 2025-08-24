@@ -23,9 +23,8 @@ public class Record {
     @JoinColumn(name = "user_id")
     private User userId;
 
-    /*
     @ManyToOne()
-    @JoinColumn(name = "active_party_id)
-    private Active_Party active_party;
-     */
+    @JoinColumn(name = "active_party_id")
+    private ActiveParty activeParty;
+
 }
