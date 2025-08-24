@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -46,4 +47,6 @@ public class ActiveParty {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany(mappedBy = "activePartys")
+    private List<Player> players;
 }

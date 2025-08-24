@@ -8,7 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,7 +20,7 @@ public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer playerId;
+    private Integer player_id;
 
     @Column(name = "player_username")
     private String playerUsername;
@@ -34,5 +37,13 @@ public class Player {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+    name = "player_active_party",
+    joinColumns = @JoinColumn(name = "player_id"),
+    inverseJoinColumns = @JoinColumn(name = "active_party_id")
+)
+private List<ActiveParty> activePartys;
 
 }
