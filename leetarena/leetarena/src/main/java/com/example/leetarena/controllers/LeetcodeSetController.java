@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.leetarena.services.LeetcodeSetService;
+import com.example.leetarena.dtos.LeetcodeSetDTO;
 
 import java.util.List;
 
@@ -33,9 +34,9 @@ public class LeetcodeSetController {
         return ResponseEntity.ok(leetcodeSetService.createLeetcodeSet(leetcodeSet));
     }
 
-    @PutMapping("/update")
-    private ResponseEntity<LeetcodeSet> updateLeetcodeSet(@RequestBody LeetcodeSet leetcodeSet) {
-        return ResponseEntity.ok(leetcodeSetService.updateLeetcodeSet(leetcodeSet));
+    @PutMapping("/{id}")
+    private ResponseEntity<LeetcodeSet> updateLeetcodeSet(@RequestBody LeetcodeSetDTO dto, @RequestParam Integer id) {
+        return ResponseEntity.ok(leetcodeSetService.updateLeetcodeSet(id,dto));
     }
 
     @DeleteMapping("/delete/{leetcode_set_id}")

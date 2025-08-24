@@ -8,7 +8,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -19,7 +22,7 @@ public class ActiveParty {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer activePartyId;
+    private Integer active_party_id;
 
     @Column(name = "party_difficulty")
     private String partyDifficulty;
@@ -33,10 +36,20 @@ public class ActiveParty {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    // @OneToOne
-    // private Integer leetcode_set_id
+    @OneToMany(mappedBy = "activeParty")
+    private List<Record> records;
 
-    // @OneToOne
-    // private Integer user_id;
+    @OneToOne
+    @JoinColumn(name = "leetcode_set_id")
+    private LeetcodeSet leetcodeSet;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany(mappedBy = "activePartys")
+    private List<Player> players;
+
+    @OneToOne
+    private Summary summary;
 }

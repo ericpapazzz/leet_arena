@@ -1,6 +1,7 @@
 package com.example.leetarena.services;
 
 import com.example.leetarena.models.LeetcodeSet;
+import com.example.leetarena.dtos.LeetcodeSetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.leetarena.repositories.*;
@@ -37,26 +38,27 @@ public class LeetcodeSetService {
         return leetcodeSetRepository.save(leetcodeSet);
     }
 
-    public LeetcodeSet updateLeetcodeSet(LeetcodeSet leetcodeSet) {
+    public LeetcodeSet updateLeetcodeSet(Integer id, LeetcodeSetDTO dto) {
 
-        Optional<LeetcodeSet> leetcodeSet1 = leetcodeSetRepository.findById(leetcodeSet.getLeetcodeSetId());
-
-        if(!leetcodeSet1.isPresent()) {
-            throw new IllegalArgumentException("Could not find LeetcodeSet");
+        // Fetch the existing set
+        LeetcodeSet existingSet = getLeetcodeSetById(id);
+        if (existingSet == null) {
+            throw new IllegalArgumentException("Could not find LeetcodeSet with id: " + id);
         }
-
-        if(leetcodeSet.getProblems() == null || leetcodeSet.getProblems().isEmpty()) {
+    
+        // Validate input
+        if (dto.getProblems() == null || dto.getProblems().isEmpty()) {
             throw new IllegalArgumentException("Problems were not provided");
         }
-
-        LeetcodeSet updatedLeetcodeSet = leetcodeSet1.get();
-
-        if(!updatedLeetcodeSet.getProblems().equals(leetcodeSet.getProblems())) {
-            updatedLeetcodeSet.setProblems(leetcodeSet.getProblems());
+    
+        // Update fields
+        if (!existingSet.getProblems().equals(dto.getProblems())) {
+            existingSet.setProblems(dto.getProblems());
         }
-
-        return leetcodeSetRepository.save(updatedLeetcodeSet);
-    }
+    
+        // Save and return
+        return leetcodeSetRepository.save(existingSet);
+    }    
 
     public void deleteLeetcodeSet(int leetcodeSetId) {
         if(!leetcodeSetRepository.existsById(leetcodeSetId)) {

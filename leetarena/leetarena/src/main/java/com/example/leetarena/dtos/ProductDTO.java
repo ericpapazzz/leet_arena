@@ -11,5 +11,4 @@ public class ProductDTO {
     private String productDescription;
     private String productImg;
 
-
 }

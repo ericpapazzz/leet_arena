@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.leetarena.models.Record;
+import com.example.leetarena.dtos.RecordDTO;
 import com.example.leetarena.repositories.RecordRepository;
 
 import java.util.List;
@@ -33,29 +34,28 @@ public class RecordService{
 
     //Post Methods
 
-    public void createRecord(Record record){
+    public void createRecord(RecordDTO dto){
         Record newRecord = new Record();
-        newRecord.setRecordId(newRecord.getRecordId());
 
-        if(record.getRanking() == null || record.getRanking().isEmpty()){
+        if(dto.getRanking() == null || dto.getRanking().isEmpty()){
             throw new IllegalArgumentException("Ranking is empty");
         }
 
-        if(record.getEndTime() == null){
+        if(dto.getEndTime() == null){
             throw new IllegalArgumentException("End_time is empty");
         }
 
-        newRecord.setRanking(record.getRanking());
-        newRecord.setEndTime(record.getEndTime());
-        newRecord.setUserId(record.getUserId());
+        newRecord.setRanking(dto.getRanking());
+        newRecord.setEndTime(dto.getEndTime());
+        newRecord.setUser(dto.getUser());
         recordRepository.save(newRecord);
     }
 
 
     // Put or Patch methods
 
-    public void updateRecord(int record_id,Record record){
-        Optional<Record> optionalRecord = recordRepository.findById(record_id);
+    public void updateRecord(int recordId,Record record){
+        Optional<Record> optionalRecord = recordRepository.findById(recordId);
 
         if(!optionalRecord.isPresent()){
             throw new IllegalArgumentException("Record not found");
@@ -72,14 +72,14 @@ public class RecordService{
         }
         updatedRecord.setRanking(record.getRanking());
         updatedRecord.setEndTime(record.getEndTime());
-        updatedRecord.setUserId(record.getUserId());
+        updatedRecord.setUser(record.getUser());
 
         recordRepository.save(updatedRecord);
     }
 
     //Delete methods
-    public void deleteRecord(int record_id){
-        Optional<Record> optionalRecord = recordRepository.findById(record_id);
+    public void deleteRecord(int recordId){
+        Optional<Record> optionalRecord = recordRepository.findById(recordId);
 
         if(!optionalRecord.isPresent()){
             throw new IllegalArgumentException("User not Foudned");
@@ -87,8 +87,4 @@ public class RecordService{
 
         recordRepository.delete(optionalRecord.get());
     }
-
-
-
-
 }

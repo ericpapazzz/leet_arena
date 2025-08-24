@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.leetarena.models.Record;
+import com.example.leetarena.dtos.RecordDTO;
 import com.example.leetarena.services.RecordService;
 
 import java.util.List;
@@ -36,8 +37,8 @@ public class RecordController {
     }
 
     @PostMapping("/create")
-    public void addRecord(@RequestBody Record newRecord) {
-        recordService.createRecord(newRecord);
+    public void addRecord(@RequestBody RecordDTO dto) {
+        recordService.createRecord(dto);
     }
 
     @DeleteMapping("/delete/{record_id}")

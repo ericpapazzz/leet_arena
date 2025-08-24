@@ -11,7 +11,7 @@ import java.util.List;
 public class LeetcodeSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int leetcodeSetId;
+    private int leetcodeSet_id;
 
     @ManyToMany //Many to many relationship
     @JoinTable(

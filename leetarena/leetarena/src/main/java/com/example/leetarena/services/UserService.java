@@ -30,41 +30,41 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public User createUser(User user) {
+    public User createUser(UserDTO dto) {
         User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setUserEmail(user.getUserEmail());
-        newUser.setUserPasswordHash(user.getUserPasswordHash());
+        newUser.setUsername(dto.getUsername());
+        newUser.setUserEmail(dto.getEmail());
+        newUser.setUserPasswordHash(dto.getPasswordHash());
         newUser.setUserLeetcoins(0);
 
         // Check if username or email already exists
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
-        if (userRepository.findByUserEmail(user.getUserEmail()).isPresent()) {
+        if (userRepository.findByUserEmail(dto.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
         return userRepository.save(newUser);
     }
 
-    public User updateUser(Integer id, User user) {
+    public User updateUser(Integer id, UserDTO dto) {
         User existingUser = getUserById(id);
         // if data is not provided, stay with existing data
-        if (user.getUsername() != null) {
-            existingUser.setUsername(user.getUsername());
+        if (dto.getUsername() != null) {
+            existingUser.setUsername(dto.getUsername());
         }else{
             existingUser.setUsername(existingUser.getUsername());
         }
 
-        if (user.getUserEmail() != null) {
-            existingUser.setUserEmail(user.getUserEmail());
+        if (dto.getEmail() != null) {
+            existingUser.setUserEmail(dto.getEmail());
         }else{
             existingUser.setUserEmail(existingUser.getUserEmail());
         }
 
-        if (user.getUserPasswordHash() != null) {
-            existingUser.setUserPasswordHash(user.getUserPasswordHash());
+        if (dto.getPasswordHash() != null) {
+            existingUser.setUserPasswordHash(dto.getPasswordHash());
         }else{
             existingUser.setUserPasswordHash(existingUser.getUserPasswordHash());
         }
