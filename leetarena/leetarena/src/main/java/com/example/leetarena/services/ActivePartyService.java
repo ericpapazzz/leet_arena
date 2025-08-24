@@ -25,9 +25,9 @@ public class ActivePartyService {
 
     public ActiveParty createParty(ActivePartyDTO dto){
         ActiveParty party = new ActiveParty();
-        party.setParty_difficulty(dto.getDifficulty());
-        party.setParty_prize(dto.getParty_prize());
-        party.setEnd_time(dto.getEnd_time());
+        party.setPartyDifficulty(dto.getDifficulty());
+        party.setPartyPrize(dto.getPartyPrize());
+        party.setEndTime(dto.getEndTime());
 
         return activePartyRepository.save(party);
     }
@@ -41,19 +41,19 @@ public class ActivePartyService {
         ActiveParty existingParty = getActivePartyById(id);
         // if data is not provided, stay with existing data
         if (dto.getDifficulty() != null){
-            existingParty.setParty_difficulty(dto.getDifficulty());
+            existingParty.setPartyDifficulty(dto.getDifficulty());
         }else{
-            existingParty.setParty_difficulty(existingParty.getParty_difficulty());
+            existingParty.setPartyDifficulty(existingParty.getPartyDifficulty());
         }
-        if (dto.getParty_prize() != null){
-            existingParty.setParty_prize(dto.getParty_prize());
+        if (dto.getPartyPrize() != null){
+            existingParty.setPartyPrize(dto.getPartyPrize());
         }else{
-            existingParty.setParty_prize(existingParty.getParty_prize());
+            existingParty.setPartyPrize(existingParty.getPartyPrize());
         }
-        if (dto.getEnd_time() != null){
-            existingParty.setEnd_time(dto.getEnd_time());
+        if (dto.getEndTime() != null){
+            existingParty.setEndTime(dto.getEndTime());
         }else{
-            existingParty.setEnd_time(existingParty.getEnd_time());
+            existingParty.setEndTime(existingParty.getEndTime());
         }
 
         return activePartyRepository.save(existingParty);

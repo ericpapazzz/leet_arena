@@ -21,14 +21,14 @@ public class Product {
     private String productName;
 
     @Column(name = "product_price")
-    private Integer product_price;
+    private Integer productPrice;
 
     @Column(name = "product_img")
-    private String product_img;
+    private String productImg;
 
     @Column(name = "product_description")
-    private String product_description;
+    private String productDescription;
 
     @Column(name = "product_tag")
-    private String product_tag;
+    private String productTag;
 }

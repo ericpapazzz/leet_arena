@@ -12,13 +12,13 @@ public class Summary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int summary_id;
+    private int summaryId;
 
     @Column(name = "summary_description")
-    private String summary_description;
+    private String summaryDescription;
 
     @OneToOne
-    private ActiveParty active_party;
+    private ActiveParty activeParty;
 
     /*
     @OneToMany

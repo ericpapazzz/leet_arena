@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class PlayerDTO {
-    private String player_username;
+    private String playerUsername;
 }

@@ -22,35 +22,35 @@ public class SummaryService {
         return summaryRepository.findAll();
     }
 
-    public Summary getSummaryById(int summary_id){
-        return summaryRepository.findById(summary_id).orElseThrow(() -> new RuntimeException("Summary not found"));
+    public Summary getSummaryById(int summaryId){
+        return summaryRepository.findById(summaryId).orElseThrow(() -> new RuntimeException("Summary not found"));
     }
 
     //Post Methods
     public Summary addSummary(Summary summary){
 
-        if(summary.getSummary_description() == null || summary.getSummary_description().isEmpty()){
+        if(summary.getSummaryDescription() == null || summary.getSummaryDescription().isEmpty()){
             throw new RuntimeException("Summary description is empty");
         }
 
         Summary newSummary = new Summary();
-        newSummary.setSummary_description(summary.getSummary_description());
-        newSummary.setActive_party(summary.getActive_party());
+        newSummary.setSummaryDescription(summary.getSummaryDescription());
+        newSummary.setActiveParty(summary.getActiveParty());
 
         return summaryRepository.save(newSummary);
     }
 
     //Patch method
 
-    public Summary updateSummaryDescription(int summary_id,String summary_description){
-        Summary summary = summaryRepository.findById(summary_id).orElseThrow(() -> new RuntimeException("Summary not found"));
+    public Summary updateSummaryDescription(int summaryId,String summaryDescription){
+        Summary summary = summaryRepository.findById(summaryId).orElseThrow(() -> new RuntimeException("Summary not found"));
 
-        if(summary.getSummary_description() == null || summary.getSummary_description().isEmpty()){
+        if(summary.getSummaryDescription() == null || summary.getSummaryDescription().isEmpty()){
             throw new RuntimeException("Summary description is empty");
         }
 
-        if(!summary.getSummary_description().equals(summary_description)){
-            summary.setSummary_description(summary_description);
+        if(!summary.getSummaryDescription().equals(summaryDescription)){
+            summary.setSummaryDescription(summaryDescription);
         }
 
         return summaryRepository.save(summary);
@@ -64,12 +64,12 @@ public class SummaryService {
 
     //Delete Summary
 
-    public void deleteSummary(int summary_id){
-        if(!summaryRepository.existsById(summary_id)){
+    public void deleteSummary(int summaryId){
+        if(!summaryRepository.existsById(summaryId)){
             throw new RuntimeException("Summary not found");
         }
 
-        summaryRepository.deleteById(summary_id);
+        summaryRepository.deleteById(summaryId);
     }
 
 

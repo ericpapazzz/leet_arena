@@ -40,11 +40,11 @@ public class ProductService {
             throw new RuntimeException("Invalid product name: Name cannot be null or empty");
         }
 
-        if (product.getProduct_price() == null || product.getProduct_price() <= 0) {
+        if (product.getProductPrice() == null || product.getProductPrice() <= 0) {
             throw new RuntimeException("Invalid product price: Price must be greater than 0");
         }
 
-        if (product.getProduct_img() == null || product.getProduct_img().isEmpty()) {
+        if (product.getProductImg() == null || product.getProductImg().isEmpty()) {
             throw new RuntimeException("Invalid product image: Image cannot be null or empty");
         }
 
@@ -67,17 +67,17 @@ public class ProductService {
                 }
             });
         }
-        if (product.getProduct_price() != null && product.getProduct_price() > 0) {
-            existingProduct.setProduct_price(product.getProduct_price());
+        if (product.getProductPrice() != null && product.getProductPrice() > 0) {
+            existingProduct.setProductPrice(product.getProductPrice());
         }
-        if (product.getProduct_img() != null && !product.getProduct_img().isEmpty()) {
-            existingProduct.setProduct_img(product.getProduct_img());
+        if (product.getProductImg() != null && !product.getProductImg().isEmpty()) {
+            existingProduct.setProductImg(product.getProductImg());
         }
-        if (product.getProduct_description() != null && !product.getProduct_description().isEmpty()) {
-            existingProduct.setProduct_description(product.getProduct_description());
+        if (product.getProductDescription() != null && !product.getProductDescription().isEmpty()) {
+            existingProduct.setProductDescription(product.getProductDescription());
         }
-        if (product.getProduct_tag() != null && !product.getProduct_tag().isEmpty()) {
-            existingProduct.setProduct_tag(product.getProduct_tag());
+        if (product.getProductTag() != null && !product.getProductTag().isEmpty()) {
+            existingProduct.setProductTag(product.getProductTag());
         }
 
         return productRepository.save(existingProduct);

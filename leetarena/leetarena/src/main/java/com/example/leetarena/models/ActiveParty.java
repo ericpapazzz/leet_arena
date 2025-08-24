@@ -19,19 +19,19 @@ public class ActiveParty {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer active_party_id;
+    private Integer activePartyId;
 
     @Column(name = "party_difficulty")
-    private String party_difficulty;
+    private String partyDifficulty;
 
     @Column(name = "party_prize")
-    private String party_prize;
+    private String partyPrize;
 
     @Column(name = "party_players_list")
-    private List<String> party_players_list;
+    private List<String> partyPlayersList;
 
     @Column(name = "end_time")
-    private LocalDateTime end_time;
+    private LocalDateTime endTime;
 
     // @OneToOne
     // private Integer leetcode_set_id

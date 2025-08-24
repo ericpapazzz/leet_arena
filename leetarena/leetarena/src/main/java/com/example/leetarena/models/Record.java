@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int records_id;
+    private int recordId;
 
     @Column(name = "ranking")
     private String ranking;
 
     @Column(name = "end_time")
-    private LocalDateTime end_time;
+    private LocalDateTime endTime;
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
     /*
     @ManyToOne()

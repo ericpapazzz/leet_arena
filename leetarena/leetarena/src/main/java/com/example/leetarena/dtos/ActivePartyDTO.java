@@ -8,6 +8,6 @@ import lombok.Data;
 public class ActivePartyDTO {
     
     private String difficulty;
-    private String party_prize;
-    private LocalDateTime end_time;
+    private String partyPrize;
+    private LocalDateTime endTime;
 }

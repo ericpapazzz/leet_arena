@@ -11,7 +11,7 @@ import java.util.List;
 public class LeetcodeSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int leetcode_set_id;
+    private int leetcodeSetId;
 
     @Column(columnDefinition = "TEXT")
     private String problems;

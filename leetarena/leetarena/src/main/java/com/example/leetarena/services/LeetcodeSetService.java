@@ -22,9 +22,9 @@ public class LeetcodeSetService {
         return leetcodeSetRepository.findAll();
     }
 
-    public LeetcodeSet getLeetcodeSetById(int leetcode_set_id) {
-        return leetcodeSetRepository.findById(leetcode_set_id).orElseThrow((
-                () -> new RuntimeException("Could not find LeetcodeSet with id: " + leetcode_set_id)
+    public LeetcodeSet getLeetcodeSetById(int leetcodeSetId) {
+        return leetcodeSetRepository.findById(leetcodeSetId).orElseThrow((
+                () -> new RuntimeException("Could not find LeetcodeSet with id: " + leetcodeSetId)
                 ));
     }
 
@@ -39,7 +39,7 @@ public class LeetcodeSetService {
 
     public LeetcodeSet updateLeetcodeSet(LeetcodeSet leetcodeSet) {
 
-        Optional<LeetcodeSet> leetcodeSet1 = leetcodeSetRepository.findById(leetcodeSet.getLeetcode_set_id());
+        Optional<LeetcodeSet> leetcodeSet1 = leetcodeSetRepository.findById(leetcodeSet.getLeetcodeSetId());
 
         if(!leetcodeSet1.isPresent()) {
             throw new IllegalArgumentException("Could not find LeetcodeSet");
@@ -58,11 +58,11 @@ public class LeetcodeSetService {
         return leetcodeSetRepository.save(updatedLeetcodeSet);
     }
 
-    public void deleteLeetcodeSet(int leetcode_set_id) {
-        if(!leetcodeSetRepository.existsById(leetcode_set_id)) {
-            throw new IllegalArgumentException("Could not find LeetcodeSet with id: " + leetcode_set_id);
+    public void deleteLeetcodeSet(int leetcodeSetId) {
+        if(!leetcodeSetRepository.existsById(leetcodeSetId)) {
+            throw new IllegalArgumentException("Could not find LeetcodeSet with id: " + leetcodeSetId);
         }
 
-        leetcodeSetRepository.deleteById(leetcode_set_id);
+        leetcodeSetRepository.deleteById(leetcodeSetId);
     }
 }

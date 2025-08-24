@@ -23,31 +23,31 @@ public class RecordService{
         return recordRepository.findAll();
     }
 
-    public Record getRecordById(int record_id){
-        return recordRepository.findById(record_id).get();
+    public Record getRecordById(int recordId){
+        return recordRepository.findById(recordId).get();
     }
 
-    public List<Record> getRecordsByUser(int user_id){
-       return recordRepository.getRecordsByUserId(user_id);
+    public List<Record> getRecordsByUser(int userId){
+       return recordRepository.getRecordsByUserId(userId);
     }
 
     //Post Methods
 
     public void createRecord(Record record){
         Record newRecord = new Record();
-        newRecord.setRecords_id(newRecord.getRecords_id());
+        newRecord.setRecordId(newRecord.getRecordId());
 
         if(record.getRanking() == null || record.getRanking().isEmpty()){
             throw new IllegalArgumentException("Ranking is empty");
         }
 
-        if(record.getEnd_time() == null){
+        if(record.getEndTime() == null){
             throw new IllegalArgumentException("End_time is empty");
         }
 
         newRecord.setRanking(record.getRanking());
-        newRecord.setEnd_time(record.getEnd_time());
-        newRecord.setUser(record.getUser());
+        newRecord.setEndTime(record.getEndTime());
+        newRecord.setUserId(record.getUserId());
         recordRepository.save(newRecord);
     }
 
@@ -67,12 +67,12 @@ public class RecordService{
             throw new IllegalArgumentException("Ranking is empty");
         }
 
-        if(updatedRecord.getEnd_time() == null){
+        if(updatedRecord.getEndTime() == null){
             throw new IllegalArgumentException("End_time is empty");
         }
         updatedRecord.setRanking(record.getRanking());
-        updatedRecord.setEnd_time(record.getEnd_time());
-        updatedRecord.setUser(record.getUser());
+        updatedRecord.setEndTime(record.getEndTime());
+        updatedRecord.setUserId(record.getUserId());
 
         recordRepository.save(updatedRecord);
     }

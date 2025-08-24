@@ -31,10 +31,10 @@ public class PlayerService {
     public Player createPlayer(PlayerDTO dto){
         Player newPlayer = new Player();
 
-        newPlayer.setPlayer_username(dto.getPlayer_username());
-        newPlayer.setPlayer_easys((byte) 0);
-        newPlayer.setPlayer_mediums((byte) 0);
-        newPlayer.setPlayer_hards((byte) 0);
+        newPlayer.setPlayerUsername(dto.getPlayerUsername());
+        newPlayer.setPlayerEasys((byte) 0);
+        newPlayer.setPlayerMediums((byte) 0);
+        newPlayer.setPlayerHards((byte) 0);
 
         return playerRepository.save(newPlayer);
     }
@@ -43,10 +43,10 @@ public class PlayerService {
         Player existingPlayer = getPlayerById(id);
 
         // if data is not provided,stay with existing data
-        if (dto.getPlayer_username() != null){
-            existingPlayer.setPlayer_username(dto.getPlayer_username());
+        if (dto.getPlayerUsername() != null){
+            existingPlayer.setPlayerUsername(dto.getPlayerUsername());
         }else{
-            existingPlayer.setPlayer_username((existingPlayer.getPlayer_username()));
+            existingPlayer.setPlayerUsername((existingPlayer.getPlayerUsername()));
         }
 
         return playerRepository.save(existingPlayer);
