@@ -43,18 +43,18 @@ public class PlayerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
+    public ResponseEntity<Player> createPlayer(@RequestBody PlayerDTO dto) {
         try {
-            return ResponseEntity.ok(playerService.createPlayer(player));
+            return ResponseEntity.ok(playerService.createPlayer(dto));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Player> updatePlayer(@PathVariable Integer id, @RequestBody Player player) {
+    public ResponseEntity<Player> updatePlayer(@PathVariable Integer id, @RequestBody PlayerDTO dto) {
         try {
-            return ResponseEntity.ok(playerService.updatePlayer(id, player));
+            return ResponseEntity.ok(playerService.updatePlayer(id, dto));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(null);
         }
