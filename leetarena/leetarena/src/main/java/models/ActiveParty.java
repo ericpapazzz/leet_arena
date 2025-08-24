@@ -33,8 +33,8 @@ public class ActiveParty {
     @Column(name = "end_time")
     private LocalDateTime end_time;
 
-    // @OneToOne
-    // private Integer leetcode_set_id
+    @OneToOne
+    private LeetcodeSet leetcode_set;
 
     // @OneToOne
     // private Integer user_id;
