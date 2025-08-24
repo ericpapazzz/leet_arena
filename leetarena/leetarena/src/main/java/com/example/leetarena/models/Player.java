@@ -32,7 +32,7 @@ public class Player {
     private byte playerHards;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User userId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

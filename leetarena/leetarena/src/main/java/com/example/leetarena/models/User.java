@@ -34,4 +34,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Record> records;
 
+    @OneToMany(mappedBy = "user")
+    private List<Player> players;
+
 }
