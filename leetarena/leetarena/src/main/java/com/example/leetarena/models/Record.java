@@ -21,7 +21,7 @@ public class Record {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @ManyToOne()
     @JoinColumn(name = "active_party_id")

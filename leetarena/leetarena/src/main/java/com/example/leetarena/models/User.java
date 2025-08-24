@@ -17,7 +17,7 @@ import com.example.leetarena.models.Record;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer user_id;
 
     @Column(name = "username")
     private String username;
@@ -31,7 +31,7 @@ public class User {
     @Column(name = "user_leetcoins")
     private int userLeetcoins;
 
-    @OneToMany(mappedBy = "record_id")
-    private List<Record> user_records;
+    @OneToMany(mappedBy = "user")
+    private List<Record> records;
 
 }

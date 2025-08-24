@@ -47,7 +47,7 @@ public class RecordService{
 
         newRecord.setRanking(record.getRanking());
         newRecord.setEndTime(record.getEndTime());
-        newRecord.setUserId(record.getUserId());
+        newRecord.setUser(record.getUser());
         recordRepository.save(newRecord);
     }
 
@@ -72,7 +72,7 @@ public class RecordService{
         }
         updatedRecord.setRanking(record.getRanking());
         updatedRecord.setEndTime(record.getEndTime());
-        updatedRecord.setUserId(record.getUserId());
+        updatedRecord.setUser(record.getUser());
 
         recordRepository.save(updatedRecord);
     }

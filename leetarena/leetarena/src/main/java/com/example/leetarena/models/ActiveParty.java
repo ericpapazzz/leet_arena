@@ -21,7 +21,7 @@ public class ActiveParty {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer activePartyId;
+    private Integer active_party_id;
 
     @Column(name = "party_difficulty")
     private String partyDifficulty;
@@ -35,7 +35,7 @@ public class ActiveParty {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @OneToMany(mappedBy = "activePartyId")
+    @OneToMany(mappedBy = "activeParty")
     private List<Record> records;
 
     // @OneToOne
