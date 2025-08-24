@@ -61,6 +61,11 @@ public class ProductService {
         }else{
             newProduct.setProductDescription(dto.getProductDescription());
         }
+        if (dto.getProductTag() == null || dto.getProductTag().isEmpty()){
+            throw new RuntimeException("Invalid product Tag: Tag cannot be null or empty");
+        }else{
+            newProduct.setProductTag(dto.getProductTag());
+        }
 
         if (productRepository.findByProductName(dto.getProductName()).isPresent()) {
             throw new RuntimeException("Product with name " + dto.getProductName() + " already exists");
