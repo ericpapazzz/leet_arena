@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Data
-@Table( name = "records")
+@Table(name = "records")
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int record_id;
+    private Integer record_id;
 
     @Column(name = "ranking")
     private String ranking;
@@ -19,12 +20,12 @@ public class Record {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "active_party_id")
     private ActiveParty activeParty;
-
 }

@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Data
 @Table(name = "products")
 public class Product {
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer product_id;
