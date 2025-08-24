@@ -1,11 +1,10 @@
-package controllers;
+package com.example.leetarena.controllers;
 
-import models.LeetcodeSet;
+import com.example.leetarena.models.LeetcodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import services.LeetcodeSetService;
-import services.SummaryService;
+import com.example.leetarena.services.LeetcodeSetService;
 
 import java.util.List;
 

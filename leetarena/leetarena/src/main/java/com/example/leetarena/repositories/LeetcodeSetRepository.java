@@ -1,6 +1,6 @@
-package repositories;
+package com.example.leetarena.repositories;
 
-import models.LeetcodeSet;
+import com.example.leetarena.models.LeetcodeSet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,9 @@
-package services;
+package com.example.leetarena.services;
 
-import models.LeetcodeSet;
+import com.example.leetarena.models.LeetcodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.LeetcodeSetRepository;
+import com.example.leetarena.repositories.*;
 
 import java.util.List;
 import java.util.Optional;

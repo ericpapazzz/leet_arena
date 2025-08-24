@@ -1,4 +1,4 @@
-package models;
+package com.example.leetarena.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
