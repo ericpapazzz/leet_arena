@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int recordId;
+    private int record_id;
 
     @Column(name = "ranking")
     private String ranking;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.leetarena.models.Record;
+import com.example.leetarena.dtos.RecordDTO;
 import com.example.leetarena.repositories.RecordRepository;
 
 import java.util.List;
@@ -33,21 +34,20 @@ public class RecordService{
 
     //Post Methods
 
-    public void createRecord(Record record){
+    public void createRecord(RecordDTO dto){
         Record newRecord = new Record();
-        newRecord.setRecordId(newRecord.getRecordId());
 
-        if(record.getRanking() == null || record.getRanking().isEmpty()){
+        if(dto.getRanking() == null || dto.getRanking().isEmpty()){
             throw new IllegalArgumentException("Ranking is empty");
         }
 
-        if(record.getEndTime() == null){
+        if(dto.getEndTime() == null){
             throw new IllegalArgumentException("End_time is empty");
         }
 
-        newRecord.setRanking(record.getRanking());
-        newRecord.setEndTime(record.getEndTime());
-        newRecord.setUser(record.getUser());
+        newRecord.setRanking(dto.getRanking());
+        newRecord.setEndTime(dto.getEndTime());
+        newRecord.setUser(dto.getUser());
         recordRepository.save(newRecord);
     }
 

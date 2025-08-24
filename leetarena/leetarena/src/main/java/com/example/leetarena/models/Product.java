@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Data
@@ -36,5 +37,6 @@ public class Product {
     private String productTag;
 
     @ManyToMany(mappedBy = "products")
+    @JsonBackReference
     private List<User> users = new ArrayList<>();
 }

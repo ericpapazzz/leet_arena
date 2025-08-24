@@ -12,7 +12,7 @@ public class Summary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int summaryId;
+    private int summary_id;
 
     @Column(name = "summary_description")
     private String summaryDescription;
