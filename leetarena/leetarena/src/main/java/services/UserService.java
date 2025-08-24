@@ -42,7 +42,7 @@ public class UserService {
             throw new RuntimeException("Email already exists");
         }
 
-        return userRepository.save(user);
+        return userRepository.save(newUser);
     }
 
     public User updateUser(Integer id, User user) {
