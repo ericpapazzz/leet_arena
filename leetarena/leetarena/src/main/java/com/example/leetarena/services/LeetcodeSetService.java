@@ -31,8 +31,8 @@ public class LeetcodeSetService {
 
     public LeetcodeSet createLeetcodeSet(LeetcodeSet leetcodeSet) {
 
-        if(leetcodeSet.getProblems() == null || leetcodeSet.getProblems().isEmpty()) {
-            throw new IllegalArgumentException("Problems were not provided");
+        if(leetcodeSet.getProblemsList().isEmpty()) {
+            throw new IllegalArgumentException("No problems provided");
         }
 
         return leetcodeSetRepository.save(leetcodeSet);
@@ -52,8 +52,8 @@ public class LeetcodeSetService {
         }
     
         // Update fields
-        if (!existingSet.getProblems().equals(dto.getProblems())) {
-            existingSet.setProblems(dto.getProblems());
+        if (!existingSet.getProblemsList().equals(dto.getProblems())) {
+            existingSet.setProblemsList(dto.getProblems());
         }
     
         // Save and return
