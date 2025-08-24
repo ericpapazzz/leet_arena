@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping("/Partys")
+@RequestMapping("/partys")
 @CrossOrigin(origins = "http://localhost:8080")
 public class ActivePartyController {
 
