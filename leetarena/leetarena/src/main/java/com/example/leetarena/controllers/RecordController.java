@@ -26,13 +26,13 @@ public class RecordController {
     }
 
     @GetMapping("/{record_id}")
-    public ResponseEntity<Record> getRecordById(@PathVariable("record_id") int record_id) {
-        return ResponseEntity.ok(recordService.getRecordById(record_id));
+    public ResponseEntity<Record> getRecordById(@PathVariable("record_id") int recordId) {
+        return ResponseEntity.ok(recordService.getRecordById(recordId));
     }
 
     @GetMapping("/byuser/{user_id}")
-    public ResponseEntity<List<Record>> getRecordsByUserId(@PathVariable("user_id") int user_id) {
-        return ResponseEntity.ok(recordService.getRecordsByUser(user_id));
+    public ResponseEntity<List<Record>> getRecordsByUserId(@PathVariable("user_id") int userId) {
+        return ResponseEntity.ok(recordService.getRecordsByUser(userId));
     }
 
     @PostMapping("/create")
@@ -41,13 +41,13 @@ public class RecordController {
     }
 
     @DeleteMapping("/delete/{record_id}")
-    public void deleteRecordById(@PathVariable("record_id") int record_id) {
-        recordService.deleteRecord(record_id);
+    public void deleteRecordById(@PathVariable("record_id") int recordId) {
+        recordService.deleteRecord(recordId);
     }
 
     @PutMapping("/update/{record_id}")
-    public void updateRecord(@PathVariable("record_id") int record_id,@RequestBody Record updatedRecord) {
-        recordService.updateRecord(record_id, updatedRecord);
+    public void updateRecord(@PathVariable("record_id") int recordId,@RequestBody Record updatedRecord) {
+        recordService.updateRecord(recordId, updatedRecord);
     }
 
 }

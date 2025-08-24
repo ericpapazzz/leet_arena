@@ -24,8 +24,8 @@ public class LeetcodeSetController {
     }
 
     @GetMapping("/{leetcode_set_id}")
-    private ResponseEntity<LeetcodeSet> getLeetcodeSetById(@PathVariable("leetcode_set_id") int leetcode_set_id) {
-        return ResponseEntity.ok(leetcodeSetService.getLeetcodeSetById(leetcode_set_id));
+    private ResponseEntity<LeetcodeSet> getLeetcodeSetById(@PathVariable("leetcode_set_id") int leetcodeSetId) {
+        return ResponseEntity.ok(leetcodeSetService.getLeetcodeSetById(leetcodeSetId));
     }
 
     @PostMapping("/create")
@@ -39,7 +39,7 @@ public class LeetcodeSetController {
     }
 
     @DeleteMapping("/delete/{leetcode_set_id}")
-    private void deleteLeetcodeSet(@PathVariable("leetcode_set_id") int leetcode_set_id) {
-        leetcodeSetService.deleteLeetcodeSet(leetcode_set_id);
+    private void deleteLeetcodeSet(@PathVariable("leetcode_set_id") int leetcodeSetId) {
+        leetcodeSetService.deleteLeetcodeSet(leetcodeSetId);
     }
 }

@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 @Data
 public class RecordDTO {
     private String ranking;
-    private LocalDateTime end_time;
+    private LocalDateTime endTime;
 }

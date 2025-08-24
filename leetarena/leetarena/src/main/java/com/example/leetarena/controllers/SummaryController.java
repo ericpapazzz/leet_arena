@@ -24,9 +24,9 @@ public class SummaryController {
         return ResponseEntity.ok(summaryService.getAllSummarys());
     }
 
-    @GetMapping("/{sumamry_id}")
-    public ResponseEntity<Summary> getSummaryById(@PathVariable("sumamry_id") int sumamry_id){
-        return ResponseEntity.ok(summaryService.getSummaryById(sumamry_id));
+    @GetMapping("/{summary_id}")
+    public ResponseEntity<Summary> getSummaryById(@PathVariable("summary_id") int summaryId){
+        return ResponseEntity.ok(summaryService.getSummaryById(summaryId));
     }
 
     @PostMapping("/create")
@@ -35,13 +35,13 @@ public class SummaryController {
     }
 
     @PatchMapping("/edit_des/{summary_id}")
-    public ResponseEntity<Summary> updateSummaryDescription(@PathVariable("summary_id") int summary_id, @RequestParam() String description){
-        return ResponseEntity.ok(summaryService.updateSummaryDescription(summary_id, description));
+    public ResponseEntity<Summary> updateSummaryDescription(@PathVariable("summary_id") int summaryId, @RequestParam() String description){
+        return ResponseEntity.ok(summaryService.updateSummaryDescription(summaryId, description));
     }
 
     @DeleteMapping("/delete/{summary_id}")
-    public void deleteSummary(@PathVariable("summary_id") int summary_id){
-        summaryService.deleteSummary(summary_id);
+    public void deleteSummary(@PathVariable("summary_id") int summaryId){
+        summaryService.deleteSummary(summaryId);
     }
 
 }

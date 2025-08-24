@@ -54,8 +54,8 @@ public class RecordService{
 
     // Put or Patch methods
 
-    public void updateRecord(int record_id,Record record){
-        Optional<Record> optionalRecord = recordRepository.findById(record_id);
+    public void updateRecord(int recordId,Record record){
+        Optional<Record> optionalRecord = recordRepository.findById(recordId);
 
         if(!optionalRecord.isPresent()){
             throw new IllegalArgumentException("Record not found");
@@ -78,11 +78,11 @@ public class RecordService{
     }
 
     //Delete methods
-    public void deleteRecord(int record_id){
-        Optional<Record> optionalRecord = recordRepository.findById(record_id);
+    public void deleteRecord(int recordId){
+        Optional<Record> optionalRecord = recordRepository.findById(recordId);
 
         if(!optionalRecord.isPresent()){
-            throw new IllegalArgumentException("User not Foudned");
+            throw new IllegalArgumentException("User not Found");
         }
 
         recordRepository.delete(optionalRecord.get());
