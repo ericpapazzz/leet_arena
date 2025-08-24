@@ -1,9 +1,12 @@
-package services;
+package com.example.leetarena.services;
 
 import org.springframework.stereotype.Service;
+
+import com.example.leetarena.models.Product;
+import com.example.leetarena.repositories.ProductRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import repositories.ProductRepository;
-import models.Product;
+
 import java.util.List;
 
 @Service
@@ -33,7 +36,7 @@ public class ProductService {
     
     public Product createProduct(Product product) {
 
-        if (product.getProduct_name() == null || product.getProduct_name().isEmpty()) {
+        if (product.getProductName() == null || product.getProductName().isEmpty()) {
             throw new RuntimeException("Invalid product name: Name cannot be null or empty");
         }
 
@@ -45,8 +48,8 @@ public class ProductService {
             throw new RuntimeException("Invalid product image: Image cannot be null or empty");
         }
 
-        if (productRepository.findByProductName(product.getProduct_name()).isPresent()) {
-            throw new RuntimeException("Product with name " + product.getProduct_name() + " already exists");
+        if (productRepository.findByProductName(product.getProductName()).isPresent()) {
+            throw new RuntimeException("Product with name " + product.getProductName() + " already exists");
         }
 
         return productRepository.save(product);
@@ -57,10 +60,10 @@ public class ProductService {
     public Product updateProduct(Integer id, Product product) {
         Product existingProduct = getProductById(id);
 
-        if (product.getProduct_name() != null && !product.getProduct_name().isEmpty()){
-            productRepository.findByProductName(product.getProduct_name()).ifPresent(existing -> {
+        if (product.getProductName() != null && !product.getProductName().isEmpty()){
+            productRepository.findByProductName(product.getProductName()).ifPresent(existing -> {
                 if (!existing.getProduct_id().equals(id)){
-                    throw new RuntimeException("Product with name " + product.getProduct_name() + " already exists");
+                    throw new RuntimeException("Product with name " + product.getProductName() + " already exists");
                 }
             });
         }

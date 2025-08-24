@@ -1,4 +1,4 @@
-package models;
+package com.example.leetarena.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,21 +15,21 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
+    private Integer userId;
 
     @Column(name = "username")
     private String username;
 
     @Column(name = "user_email")
-    private String user_email;
+    private String userEmail;
 
     @Column(name = "user_password_hash")
-    private String user_password_hash;
+    private String userPasswordHash;
 
     @Column(name = "user_leetcoins")
-    private int user_leetcoins;
+    private int userLeetcoins;
 
-    // @ManyToOne(mappedBy = "user_id")
+    // @OneToMany(mappedBy = "user_id")
     // private List<Records> user_records;
 
 }

@@ -1,4 +1,4 @@
-package controllers;
+package com.example.leetarena.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import services.PlayerService;
-import models.Player;
-import dtos.PlayerDTO;
+import com.example.leetarena.dtos.PlayerDTO;
+import com.example.leetarena.models.Player;
+import com.example.leetarena.services.PlayerService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

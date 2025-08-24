@@ -1,11 +1,12 @@
-package services;
+package com.example.leetarena.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dtos.ActivePartyDTO;
-import models.ActiveParty;
-import repositories.ActivePartyRepository;
+import com.example.leetarena.dtos.ActivePartyDTO;
+import com.example.leetarena.models.ActiveParty;
+import com.example.leetarena.repositories.ActivePartyRepository;
+
 import java.util.List;
 
 @Service

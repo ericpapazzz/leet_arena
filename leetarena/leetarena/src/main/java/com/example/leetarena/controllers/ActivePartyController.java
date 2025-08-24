@@ -1,4 +1,4 @@
-package controllers;
+package com.example.leetarena.controllers;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import dtos.ActivePartyDTO;
-import models.ActiveParty;
-import services.ActivePartyService;
+import com.example.leetarena.dtos.ActivePartyDTO;
+import com.example.leetarena.models.ActiveParty;
+import com.example.leetarena.services.ActivePartyService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;

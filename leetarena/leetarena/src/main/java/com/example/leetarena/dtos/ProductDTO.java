@@ -1,11 +1,11 @@
-package dtos;
+package com.example.leetarena.dtos;
 
 import lombok.Data;
 
 @Data
 public class ProductDTO {
     
-    private String product_name;
+    private String productName;
     private Integer product_price;
     private String product_tag;
     private String product_description;

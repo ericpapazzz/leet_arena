@@ -1,4 +1,4 @@
-package dtos;
+package com.example.leetarena.dtos;
 
 import lombok.Data;
 

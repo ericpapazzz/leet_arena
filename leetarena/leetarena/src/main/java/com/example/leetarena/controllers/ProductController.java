@@ -1,11 +1,11 @@
-package controllers;
+package com.example.leetarena.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import models.Product;
-import services.ProductService;
+import com.example.leetarena.models.Product;
+import com.example.leetarena.services.ProductService;
 
 import java.util.List;
 

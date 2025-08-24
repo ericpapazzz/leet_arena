@@ -1,9 +1,10 @@
-package repositories;
+package com.example.leetarena.repositories;
 
-import models.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.example.leetarena.models.Record;
 
 import java.util.List;
 

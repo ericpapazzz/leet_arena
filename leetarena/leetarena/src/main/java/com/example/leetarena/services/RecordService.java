@@ -1,9 +1,10 @@
-package services;
+package com.example.leetarena.services;
 
-import models.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.RecordRepository;
+
+import com.example.leetarena.models.Record;
+import com.example.leetarena.repositories.RecordRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package models;
+package com.example.leetarena.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,7 @@ public class Product {
     private Integer product_id;
 
     @Column(name = "product_name")
-    private String product_name;
+    private String productName;
 
     @Column(name = "product_price")
     private Integer product_price;

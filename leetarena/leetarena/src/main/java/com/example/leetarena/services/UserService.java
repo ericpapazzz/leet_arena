@@ -1,10 +1,13 @@
-package services;
+package com.example.leetarena.services;
 
 import org.springframework.stereotype.Service;
+
+import com.example.leetarena.dtos.UserDTO;
+import com.example.leetarena.models.User;
+import com.example.leetarena.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import repositories.UserRepository;
-import models.User;
-import dtos.UserDTO;
+
 import java.util.List;
 
 
@@ -30,15 +33,15 @@ public class UserService {
     public User createUser(User user) {
         User newUser = new User();
         newUser.setUsername(user.getUsername());
-        newUser.setUser_email(user.getUser_email());
-        newUser.setUser_password_hash(user.getUser_password_hash());
-        newUser.setUser_leetcoins(0);
+        newUser.setUserEmail(user.getUserEmail());
+        newUser.setUserPasswordHash(user.getUserPasswordHash());
+        newUser.setUserLeetcoins(0);
 
         // Check if username or email already exists
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
-        if (userRepository.findByUser_email(user.getUser_email()).isPresent()) {
+        if (userRepository.findByUserEmail(user.getUserEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
@@ -54,16 +57,16 @@ public class UserService {
             existingUser.setUsername(existingUser.getUsername());
         }
 
-        if (user.getUser_email() != null) {
-            existingUser.setUser_email(user.getUser_email());
+        if (user.getUserEmail() != null) {
+            existingUser.setUserEmail(user.getUserEmail());
         }else{
-            existingUser.setUser_email(existingUser.getUser_email());
+            existingUser.setUserEmail(existingUser.getUserEmail());
         }
 
-        if (user.getUser_password_hash() != null) {
-            existingUser.setUser_password_hash(user.getUser_password_hash());
+        if (user.getUserPasswordHash() != null) {
+            existingUser.setUserPasswordHash(user.getUserPasswordHash());
         }else{
-            existingUser.setUser_password_hash(existingUser.getUser_password_hash());
+            existingUser.setUserPasswordHash(existingUser.getUserPasswordHash());
         }
 
         return userRepository.save(existingUser);
