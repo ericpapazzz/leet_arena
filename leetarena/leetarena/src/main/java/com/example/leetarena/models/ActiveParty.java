@@ -14,6 +14,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Data
@@ -22,6 +23,7 @@ public class ActiveParty {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("active_party_id")
     private Integer active_party_id;
 
     @Column(name = "party_difficulty")

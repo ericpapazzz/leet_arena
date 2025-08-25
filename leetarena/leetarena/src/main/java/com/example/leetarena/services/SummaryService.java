@@ -1,6 +1,8 @@
 package com.example.leetarena.services;
 
 import com.example.leetarena.models.Summary;
+import com.example.leetarena.models.ActiveParty;
+import com.example.leetarena.dtos.SummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.leetarena.repositories.*;
@@ -11,10 +13,11 @@ import java.util.List;
 public class SummaryService {
 
     private final SummaryRepository summaryRepository;
+    private final ActivePartyRepository activePartyRepository;
 
-    @Autowired
-    public SummaryService(SummaryRepository summaryRepository) {
+    public SummaryService(SummaryRepository summaryRepository, ActivePartyRepository activePartyRepository) {
         this.summaryRepository = summaryRepository;
+        this.activePartyRepository = activePartyRepository;
     }
 
     //Get Methods
@@ -27,30 +30,32 @@ public class SummaryService {
     }
 
     //Post Methods
-    public Summary addSummary(Summary summary){
+    public Summary create(SummaryDTO dto){
+        ActiveParty activeParty = activePartyRepository.findById(dto.getActivePartyId())
+        .orElseThrow(() -> new RuntimeException("ActiveParty not found")); 
 
-        if(summary.getSummaryDescription() == null || summary.getSummaryDescription().isEmpty()){
+        if(dto.getSummaryDescription() == null || dto.getSummaryDescription().isEmpty()){
             throw new RuntimeException("Summary description is empty");
         }
 
-        Summary newSummary = new Summary();
-        newSummary.setSummaryDescription(summary.getSummaryDescription());
-        newSummary.setActiveParty(summary.getActiveParty());
+        Summary summary = new Summary();
+        summary.setSummaryDescription(dto.getSummaryDescription());
+        summary.setActiveParty(activeParty);
 
-        return summaryRepository.save(newSummary);
+        return summaryRepository.save(summary);
     }
 
     //Patch method
 
-    public Summary updateSummaryDescription(int summaryId,String summaryDescription){
-        Summary summary = summaryRepository.findById(summaryId).orElseThrow(() -> new RuntimeException("Summary not found"));
+    public Summary updateSummaryDescription(Integer id, SummaryDTO dto){
+        Summary summary = summaryRepository.findById(id).orElseThrow(() -> new RuntimeException("Summary not found"));
 
         if(summary.getSummaryDescription() == null || summary.getSummaryDescription().isEmpty()){
             throw new RuntimeException("Summary description is empty");
         }
 
-        if(!summary.getSummaryDescription().equals(summaryDescription)){
-            summary.setSummaryDescription(summaryDescription);
+        if(!summary.getSummaryDescription().equals(dto.getSummaryDescription())){
+            summary.setSummaryDescription(dto.getSummaryDescription());
         }
 
         return summaryRepository.save(summary);

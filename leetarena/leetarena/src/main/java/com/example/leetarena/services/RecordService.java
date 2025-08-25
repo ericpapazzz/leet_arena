@@ -1,11 +1,11 @@
 package com.example.leetarena.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.leetarena.models.Record;
+import com.example.leetarena.models.User;
 import com.example.leetarena.dtos.RecordDTO;
 import com.example.leetarena.repositories.RecordRepository;
+import com.example.leetarena.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +13,11 @@ import java.util.Optional;
 @Service
 public class RecordService{
     private final RecordRepository recordRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public RecordService(RecordRepository recordRepository) {
+    public RecordService(RecordRepository recordRepository, UserRepository userRepository) {
         this.recordRepository = recordRepository;
+        this.userRepository = userRepository;
     }
 
     //Get Methods
@@ -24,37 +25,43 @@ public class RecordService{
         return recordRepository.findAll();
     }
 
-    public Record getRecordById(int recordId){
+    public Record getRecordById(Integer recordId){
         return recordRepository.findById(recordId).get();
     }
 
-    public List<Record> getRecordsByUser(int userId){
+    public List<Record> getRecordsByUser(Integer userId){
        return recordRepository.getRecordsByUserId(userId);
     }
 
     //Post Methods
 
-    public void createRecord(RecordDTO dto){
-        Record newRecord = new Record();
+    public Record createRecord(RecordDTO dto){
+        User user = userRepository.findById(dto.getUserId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
 
         if(dto.getRanking() == null || dto.getRanking().isEmpty()){
             throw new IllegalArgumentException("Ranking is empty");
         }
 
         if(dto.getEndTime() == null){
-            throw new IllegalArgumentException("End_time is empty");
+            throw new IllegalArgumentException("End time is empty");
         }
 
+        Record newRecord = new Record();
         newRecord.setRanking(dto.getRanking());
         newRecord.setEndTime(dto.getEndTime());
-        newRecord.setUser(dto.getUser());
-        recordRepository.save(newRecord);
+        newRecord.setUser(user);
+
+        return recordRepository.save(newRecord);
     }
 
 
     // Put or Patch methods
 
-    public void updateRecord(int recordId,Record record){
+    public Record updateRecord(Integer recordId,RecordDTO dto){
+        User user = userRepository.findById(dto.getUserId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
         Optional<Record> optionalRecord = recordRepository.findById(recordId);
 
         if(!optionalRecord.isPresent()){
@@ -68,23 +75,23 @@ public class RecordService{
         }
 
         if(updatedRecord.getEndTime() == null){
-            throw new IllegalArgumentException("End_time is empty");
+            throw new IllegalArgumentException("End time is empty");
         }
-        updatedRecord.setRanking(record.getRanking());
-        updatedRecord.setEndTime(record.getEndTime());
-        updatedRecord.setUser(record.getUser());
+        updatedRecord.setRanking(dto.getRanking());
+        updatedRecord.setEndTime(dto.getEndTime());
+        updatedRecord.setUser(user);
 
-        recordRepository.save(updatedRecord);
+        return recordRepository.save(updatedRecord);
     }
 
     //Delete methods
-    public void deleteRecord(int recordId){
-        Optional<Record> optionalRecord = recordRepository.findById(recordId);
+    public void deleteRecord(Integer id){
+        Optional<Record> optionalRecord = recordRepository.findById(id);
 
         if(!optionalRecord.isPresent()){
-            throw new IllegalArgumentException("User not Foudned");
+            throw new IllegalArgumentException("Record not Foudned");
         }
 
-        recordRepository.delete(optionalRecord.get());
+        recordRepository.deleteById(id);
     }
 }
