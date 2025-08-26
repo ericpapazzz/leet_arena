@@ -60,12 +60,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
         try {
-            userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
+                userService.deleteUser(id);
+                return ResponseEntity.ok("User deleted successfully. No associated data found.");
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Error deleting user: " + e.getMessage());
         }
     }
 }
