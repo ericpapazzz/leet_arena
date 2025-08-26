@@ -10,13 +10,7 @@ import com.example.leetarena.repositories.RecordRepository;
 import com.example.leetarena.repositories.PlayerRepository;
 import com.example.leetarena.repositories.ActivePartyRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
-import com.example.leetarena.models.Record;
-import com.example.leetarena.models.Player;
-import com.example.leetarena.models.ActiveParty;
-
 
 @Service
 public class UserService {
@@ -26,7 +20,6 @@ public class UserService {
     private final PlayerRepository playerRepository;
     private final ActivePartyRepository activePartyRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository, 
                       RecordRepository recordRepository,
                       PlayerRepository playerRepository,
@@ -95,7 +88,6 @@ public class UserService {
         
         // then delete the user
         userRepository.deleteById(id);
-        // TODO: message if user is deleted correctly
     }
 
     // delete all records associated to the user when user is delete
@@ -116,19 +108,6 @@ public class UserService {
             
         } catch (Exception e) {
             throw new RuntimeException("Error deleting user records: " + e.getMessage());
-        }
-    }
-
-    // Method to check if user has any associated data
-    public boolean hasAssociatedData(Integer userId) {
-        try {
-            List<Record> userRecords = recordRepository.getRecordsByUserId(userId);
-            List<Player> userPlayers = playerRepository.getPlayersByUserId(userId);
-            List<ActiveParty> userActiveParties = activePartyRepository.getActivePartiesByUserId(userId);
-            
-            return !userRecords.isEmpty() || !userPlayers.isEmpty() || !userActiveParties.isEmpty();
-        } catch (Exception e) {
-            return false;
         }
     }
 }
