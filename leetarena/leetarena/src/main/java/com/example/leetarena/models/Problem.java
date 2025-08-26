@@ -12,15 +12,18 @@ public class Problem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int problemId;
+    private Integer problemId;
 
-    @Column(name = "problemTitle")
+    @Column(name = "problem_title")
     private String problemTitle;
-    @Column(name = "problemDifficulty")
+
+    @Column(name = "problem_difficulty")
     private String difficulty;
-    @Column(name = "problemURL")
+
+    @Column(name = "problem_url")
     private String problemURL;
-    @Column(name = "paidOnly")
+
+    @Column(name = "paid_only")
     private boolean paidOnly;
 
     @ManyToMany(mappedBy = "problemsList")

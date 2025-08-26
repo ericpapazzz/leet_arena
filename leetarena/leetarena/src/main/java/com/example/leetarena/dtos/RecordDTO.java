@@ -1,7 +1,6 @@
 package com.example.leetarena.dtos;
 
 import lombok.Data;
-import com.example.leetarena.models.User;
 
 import java.time.LocalDateTime;
 
@@ -9,5 +8,5 @@ import java.time.LocalDateTime;
 public class RecordDTO {
     private String ranking;
     private LocalDateTime endTime;
-    private User user;
+    private Integer userId;
 }

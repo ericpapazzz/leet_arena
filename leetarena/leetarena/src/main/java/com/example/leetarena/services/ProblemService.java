@@ -1,6 +1,7 @@
 package com.example.leetarena.services;
 
 import com.example.leetarena.models.Problem;
+import com.example.leetarena.dtos.ProblemDTO;
 import com.example.leetarena.repositories.ProblemRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,6 @@ public class ProblemService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public ProblemService(ProblemRepository problemRepository) {
         this.problemRepository = problemRepository;
         this.restTemplate = new RestTemplate();
@@ -61,42 +61,35 @@ public class ProblemService {
         return problemRepository.findAll();
     }
 
-    public List<Problem> createLeetcodeSet(){
-        //TODO : Manage the logic of create LeetcodeSet based on difficulty
-        return null;
-    }
-
-    //Post Methods
-
-    public Problem addNewProblem(Problem problem) {
+    public Problem addNewProblem(ProblemDTO dto) {
         Problem newProblem = new Problem();
 
-        if (problem.getProblemTitle() == null || problem.getProblemTitle().isEmpty()) {
+        if (dto.getTitle() == null || dto.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Problem title cannot be empty");
         }
 
-        if (problem.getDifficulty() == null || problem.getDifficulty().isEmpty()) {
+        if (dto.getDifficulty() == null || dto.getDifficulty().isEmpty()) {
             throw new IllegalArgumentException("Difficulty cannot be empty");
         }
 
-        if (problem.getProblemURL() == null || problem.getProblemURL().isEmpty()) {
+        if (dto.getUrl() == null || dto.getUrl().isEmpty()) {
             throw new IllegalArgumentException("Problem URL cannot be empty");
         }
 
-        if (!problem.getProblemURL().contains("https://leetcode.com/problems/")) {
+        if (!dto.getUrl().contains("https://leetcode.com/problems/")) {
             throw new IllegalArgumentException("Problem URL must contain valid URL: https://leetcode.com/problems/");
         }
 
-        newProblem.setProblemTitle(problem.getProblemTitle());
-        newProblem.setProblemURL(problem.getProblemURL());
-        newProblem.setDifficulty(problem.getDifficulty());
+        newProblem.setProblemTitle(dto.getTitle());
+        newProblem.setProblemURL(dto.getUrl());
+        newProblem.setDifficulty(dto.getDifficulty());
         return problemRepository.save(newProblem);
     }
 
     //Put Methods
 
-    public Problem updateProblem(int problemId,Problem problem) {
-        Optional<Problem> problemOptional = problemRepository.findById(problemId);
+    public Problem updateProblem(Integer id,ProblemDTO dto) {
+        Optional<Problem> problemOptional = problemRepository.findById(id);
 
         if (!problemOptional.isPresent()) {
             throw new IllegalArgumentException("Problem not found");
@@ -104,29 +97,29 @@ public class ProblemService {
 
         Problem p1 = problemOptional.get();
 
-        if (!p1.getProblemTitle().equals(problem.getProblemTitle())) {
-            p1.setProblemTitle(problem.getProblemTitle());
+        if (!p1.getProblemTitle().equals(dto.getTitle())) {
+            p1.setProblemTitle(dto.getTitle());
         }
 
-        if(!p1.getDifficulty().equals(problem.getDifficulty())){
-            p1.setDifficulty(problem.getDifficulty());
+        if(!p1.getDifficulty().equals(dto.getDifficulty())){
+            p1.setDifficulty(dto.getDifficulty());
         }
 
-        if(!p1.getProblemURL().equals(problem.getProblemURL())){
-            p1.setProblemURL(problem.getProblemURL());
+        if(!p1.getProblemURL().equals(dto.getUrl())){
+            p1.setProblemURL(dto.getUrl());
         }
 
         return problemRepository.save(p1);
     }
 
     //Delete Methods
-    public void deleteProblem(int problemId) {
-        Optional<Problem> problemOptional = problemRepository.findById(problemId);
+    public void deleteProblem(Integer id) {
+        Optional<Problem> problemOptional = problemRepository.findById(id);
         if (!problemOptional.isPresent()) {
             throw new IllegalArgumentException("Problem not found");
         }
 
-        problemRepository.delete(problemOptional.get());
+        problemRepository.deleteById(id);
     }
 
 
