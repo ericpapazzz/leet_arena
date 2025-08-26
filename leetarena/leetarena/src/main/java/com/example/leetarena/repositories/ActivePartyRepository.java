@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.leetarena.models.ActiveParty;
 
-import java.util.Optional;
+
 import java.util.List;
 
 @Repository
