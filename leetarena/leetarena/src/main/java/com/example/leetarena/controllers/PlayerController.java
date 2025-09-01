@@ -42,6 +42,15 @@ public class PlayerController {
         }
     }
 
+    @GetMapping("/byuser/{userId}")
+    public ResponseEntity<List<Player>> getPlayersByUserId(@PathVariable Integer userId) {
+        try {
+            return ResponseEntity.ok(playerService.getPlayersByUserId(userId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Player> createPlayer(@RequestBody PlayerDTO dto) {
         try {
@@ -61,7 +70,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletePlayer(@PathVariable Integer id) {
         try {
             playerService.deletePlayer(id);
             return ResponseEntity.noContent().build();

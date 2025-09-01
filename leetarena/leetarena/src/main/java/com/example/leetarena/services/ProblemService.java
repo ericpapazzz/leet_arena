@@ -1,5 +1,6 @@
 package com.example.leetarena.services;
 
+import com.example.leetarena.dtos.ProblemDTO;
 import com.example.leetarena.models.Problem;
 import com.example.leetarena.repositories.ProblemRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -114,10 +115,10 @@ public class ProblemService {
 
 
     //Post Methods
-    public Problem addNewProblem(Problem problem) {
+    public Problem addNewProblem(ProblemDTO problem) {
         Problem newProblem = new Problem();
 
-        if (problem.getProblemTitle() == null || problem.getProblemTitle().isEmpty()) {
+        if (problem.getTitle() == null || problem.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Problem title cannot be empty");
         }
 
@@ -125,23 +126,23 @@ public class ProblemService {
             throw new IllegalArgumentException("Difficulty cannot be empty");
         }
 
-        if (problem.getProblemURL() == null || problem.getProblemURL().isEmpty()) {
+        if (problem.getUrl() == null || problem.getUrl().isEmpty()) {
             throw new IllegalArgumentException("Problem URL cannot be empty");
         }
 
-        if (!problem.getProblemURL().contains("https://leetcode.com/problems/")) {
+        if (!problem.getUrl().contains("https://leetcode.com/problems/")) {
             throw new IllegalArgumentException("Problem URL must contain valid URL: https://leetcode.com/problems/");
         }
 
-        newProblem.setProblemTitle(problem.getProblemTitle());
-        newProblem.setProblemURL(problem.getProblemURL());
+        newProblem.setProblemTitle(problem.getTitle());
+        newProblem.setProblemURL(problem.getUrl());
         newProblem.setDifficulty(problem.getDifficulty());
         return problemRepository.save(newProblem);
     }
 
     //Put Methods
 
-    public Problem updateProblem(int problemId,Problem problem) {
+    public Problem updateProblem(int problemId,ProblemDTO problem) {
         Optional<Problem> problemOptional = problemRepository.findById(problemId);
 
         if (!problemOptional.isPresent()) {
@@ -150,16 +151,16 @@ public class ProblemService {
 
         Problem p1 = problemOptional.get();
 
-        if (!p1.getProblemTitle().equals(problem.getProblemTitle())) {
-            p1.setProblemTitle(problem.getProblemTitle());
+        if (!p1.getProblemTitle().equals(problem.getTitle())) {
+            p1.setProblemTitle(problem.getTitle());
         }
 
         if(!p1.getDifficulty().equals(problem.getDifficulty())){
             p1.setDifficulty(problem.getDifficulty());
         }
 
-        if(!p1.getProblemURL().equals(problem.getProblemURL())){
-            p1.setProblemURL(problem.getProblemURL());
+        if(!p1.getProblemURL().equals(problem.getUrl())){
+            p1.setProblemURL(problem.getUrl());
         }
 
         return problemRepository.save(p1);

@@ -1,11 +1,12 @@
 package com.example.leetarena.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.leetarena.dtos.PlayerDTO;
 import com.example.leetarena.models.Player;
+import com.example.leetarena.models.User;
 import com.example.leetarena.repositories.PlayerRepository;
+import com.example.leetarena.repositories.UserRepository;
 
 import java.util.List;
 
@@ -13,10 +14,11 @@ import java.util.List;
 public class PlayerService {
     
     private final PlayerRepository playerRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public PlayerService(PlayerRepository playerRepository) {
+    public PlayerService(PlayerRepository playerRepository, UserRepository userRepository) {
         this.playerRepository = playerRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Player> getAllPlayers(){
@@ -28,13 +30,21 @@ public class PlayerService {
             .orElseThrow(() -> new RuntimeException("Player not found"));
     }
 
-    public Player createPlayer(PlayerDTO dto){
-        Player newPlayer = new Player();
+    public List<Player> getPlayersByUserId(Integer userId) {
+        return playerRepository.getPlayersByUserId(userId);
+    }
 
+    public Player createPlayer(PlayerDTO dto){
+        // Find the user by userId
+        User user = userRepository.findById(dto.getUserId())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        Player newPlayer = new Player();
         newPlayer.setPlayerUsername(dto.getPlayerUsername());
         newPlayer.setPlayerEasys((byte) 0);
         newPlayer.setPlayerMediums((byte) 0);
         newPlayer.setPlayerHards((byte) 0);
+        newPlayer.setUser(user); // Associate player with user
 
         return playerRepository.save(newPlayer);
     }
@@ -54,6 +64,5 @@ public class PlayerService {
 
     public void deletePlayer(Integer id){
        playerRepository.deleteById(id);
-        // TODO: message if user is deleted correctly
     }
 }

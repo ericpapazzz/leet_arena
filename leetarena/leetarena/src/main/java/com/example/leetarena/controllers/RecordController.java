@@ -26,29 +26,43 @@ public class RecordController {
         return ResponseEntity.ok(recordService.getAllRecords());
     }
 
-    @GetMapping("/{record_id}")
-    public ResponseEntity<Record> getRecordById(@PathVariable("record_id") int record_id) {
-        return ResponseEntity.ok(recordService.getRecordById(record_id));
+    @GetMapping("/{id}")
+    public ResponseEntity<Record> getRecordById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(recordService.getRecordById(id));
     }
 
-    @GetMapping("/byuser/{user_id}")
-    public ResponseEntity<List<Record>> getRecordsByUserId(@PathVariable("user_id") int user_id) {
-        return ResponseEntity.ok(recordService.getRecordsByUser(user_id));
+    @GetMapping("/byuser/{id}")
+    public ResponseEntity<List<Record>> getRecordsByUserId(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(recordService.getRecordsByUser(id));
     }
 
     @PostMapping("/create")
-    public void addRecord(@RequestBody RecordDTO dto) {
-        recordService.createRecord(dto);
+    public ResponseEntity<Record> addRecord(@RequestBody RecordDTO dto) {
+        try{
+            return ResponseEntity.ok(recordService.createRecord(dto));
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
-    @DeleteMapping("/delete/{record_id}")
-    public void deleteRecordById(@PathVariable("record_id") int record_id) {
-        recordService.deleteRecord(record_id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteRecordById(@PathVariable Integer id) {
+        try {
+            recordService.deleteRecord(id);
+            return ResponseEntity.noContent().build(); 
+       } catch (RuntimeException e){
+            return ResponseEntity.notFound().build();
+        }
+        
     }
 
-    @PutMapping("/update/{record_id}")
-    public void updateRecord(@PathVariable("record_id") int record_id,@RequestBody Record updatedRecord) {
-        recordService.updateRecord(record_id, updatedRecord);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Record> updateRecord(@PathVariable Integer id,@RequestBody RecordDTO dto) {
+        try{
+            return ResponseEntity.ok(recordService.updateRecord(id,dto));
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

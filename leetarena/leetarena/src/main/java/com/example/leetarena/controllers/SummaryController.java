@@ -1,6 +1,7 @@
 package com.example.leetarena.controllers;
 
 import com.example.leetarena.models.Summary;
+import com.example.leetarena.dtos.SummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,13 @@ public class SummaryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Summary> createSummary(@RequestBody Summary summary){
-        return ResponseEntity.ok(summaryService.addSummary(summary));
+    public ResponseEntity<Summary> createSummary(@RequestBody SummaryDTO dto){
+        return ResponseEntity.ok(summaryService.create(dto));
     }
 
-    @PatchMapping("/edit_des/{summary_id}")
-    public ResponseEntity<Summary> updateSummaryDescription(@PathVariable("summary_id") int summary_id, @RequestParam() String description){
-        return ResponseEntity.ok(summaryService.updateSummaryDescription(summary_id, description));
+    @PatchMapping("/edit_des/{id}")
+    public ResponseEntity<Summary> updateSummaryDescription(@PathVariable("id") Integer id, @RequestBody() SummaryDTO dto){
+        return ResponseEntity.ok(summaryService.updateSummaryDescription(id, dto));
     }
 
     @DeleteMapping("/delete/{summary_id}")

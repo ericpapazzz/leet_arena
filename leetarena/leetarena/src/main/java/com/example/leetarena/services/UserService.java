@@ -1,24 +1,33 @@
 package com.example.leetarena.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.leetarena.dtos.UserDTO;
 import com.example.leetarena.models.User;
 import com.example.leetarena.repositories.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.leetarena.repositories.RecordRepository;
+import com.example.leetarena.repositories.PlayerRepository;
+import com.example.leetarena.repositories.ActivePartyRepository;
 
 import java.util.List;
-
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RecordRepository recordRepository;
+    private final PlayerRepository playerRepository;
+    private final ActivePartyRepository activePartyRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, 
+                      RecordRepository recordRepository,
+                      PlayerRepository playerRepository,
+                      ActivePartyRepository activePartyRepository) {
         this.userRepository = userRepository;
+        this.recordRepository = recordRepository;
+        this.playerRepository = playerRepository;
+        this.activePartyRepository = activePartyRepository;
     }
 
     public List<User> getAllUsers() {
@@ -72,10 +81,33 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
+    @Transactional
     public void deleteUser(Integer id) {
+        // first, delete all associated records
+        deleteAllUserRecords(id);
+        
+        // then delete the user
         userRepository.deleteById(id);
-        // TODO: message if user is deleted correctly
-        // TODO: delete all records associated with the user
     }
 
+    // delete all records associated to the user when user is delete
+    @Transactional
+    public void deleteAllUserRecords(Integer userId) {
+        try {
+            // delete all records associated with the user
+            recordRepository.deleteRecordsByUserId(userId);
+            
+            // delete all players associated with the user
+            playerRepository.deletePlayersByUserId(userId);
+            
+            // delete all active parties associated with the user
+            activePartyRepository.deleteActivePartiesByUserId(userId);
+            
+            // Note: Products relationship is Many-to-Many, so we don't need to delete products
+            // The relationship will be automatically removed when the user is deleted
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting user records: " + e.getMessage());
+        }
+    }
 }

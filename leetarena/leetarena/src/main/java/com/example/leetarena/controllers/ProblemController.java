@@ -1,6 +1,7 @@
 package com.example.leetarena.controllers;
 
 import com.example.leetarena.models.Problem;
+import com.example.leetarena.dtos.ProblemDTO;
 import com.example.leetarena.services.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,24 +25,18 @@ public class ProblemController {
         return problemService.getAllProblems();
     }
 
-    @GetMapping("/createLeetcodeSet")
-    public List<Problem> createLeetcodeSet(){
-       //TODO
-        return null;
-    }
-
     @PostMapping("/add")
-    public ResponseEntity<Problem> addProblem(@RequestBody Problem problem) {
-        return ResponseEntity.ok(problemService.addNewProblem(problem));
+    public ResponseEntity<Problem> addProblem(@RequestBody ProblemDTO dto) {
+        return ResponseEntity.ok(problemService.addNewProblem(dto));
     }
 
-    @PutMapping("/update/{problemId}")
-    public ResponseEntity<Problem> updateProblem(@PathVariable ("problemId") int problemId,@RequestBody Problem problem) {
-        return ResponseEntity.ok(problemService.updateProblem(problemId, problem));
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Problem> updateProblem(@PathVariable Integer id,@RequestBody ProblemDTO dto) {
+        return ResponseEntity.ok(problemService.updateProblem(id, dto));
     }
 
-    @DeleteMapping("/delete/{problemId}")
-    public void deleteProblem(@PathVariable("problemId") int problemId) {
-        problemService.deleteProblem(problemId);
+    @DeleteMapping("/delete/{id}")
+    public void deleteProblem(@PathVariable Integer id) {
+        problemService.deleteProblem(id);
     }
 }
