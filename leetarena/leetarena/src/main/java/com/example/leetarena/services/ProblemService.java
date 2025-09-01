@@ -4,17 +4,23 @@ import com.example.leetarena.models.Problem;
 import com.example.leetarena.repositories.ProblemRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProblemService {
+
+    //TODO: Implement a HashMap to store the values of the cantEasy,Medium and hard problems for the creation of the leetcodeSet
 
     private final ProblemRepository problemRepository;
     private final RestTemplate restTemplate;
@@ -25,32 +31,52 @@ public class ProblemService {
         this.problemRepository = problemRepository;
         this.restTemplate = new RestTemplate();
         this.objectMapper = new ObjectMapper();
-        refreshProblems();
     }
 
     //Initialize the problems with a fetch call
 
+    @Transactional
     @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
     public void refreshProblems(){
         String url = "https://leetcode-api-pied.vercel.app/problems";
         try{
             String response = restTemplate.getForObject(url, String.class);
-            JsonNode root = objectMapper.readTree(response).get("stat_status_pair");
+            JsonNode root = objectMapper.readTree(response);
 
             List<Problem> problems = new ArrayList<>();
 
-            for(JsonNode node : root){
-                Problem p = new Problem();
-                p.setProblemId(node.get("stat").get("id").asInt());
-                p.setProblemTitle(node.get("stat").get("title").asText());
-                p.setProblemURL(node.get("stat").get("url").asText());
-                p.setDifficulty(node.get("stat").get("difficulty").asText());
-                p.setPaidOnly(node.get("stat").get("paid_only").asBoolean());
-                problems.add(p);
-            }
-            problemRepository.saveAll(problems);
-            System.out.println("Problems have been refreshed");
+            Set<Integer> existingIds = problemRepository.findAll() //In this set we store the currentIds, so in the loop we dont have to iterate each object to find it, making to O(n) to O(1) search complxity
+                    .stream()
+                    .map(Problem :: getProblemId)
+                    .collect(Collectors.toSet());
 
+            if(root.isArray()){
+                for(JsonNode node : root){
+                    if(!existingIds.contains(node.get("id").asInt())){ //If there a new Problem we add it to the problems stack
+                        Problem p = new Problem();
+                        p.setProblemTitle(node.get("title").asText());
+                        p.setProblemURL(node.get("url").asText());
+                        p.setDifficulty(node.get("difficulty").asText());
+                        p.setPaidOnly(node.get("paid_only").asBoolean());
+                        problems.add(p);
+                    }
+                    else{
+                        Problem pUpdate = problemRepository.findById(node.get("id").asInt()).orElseThrow(() -> new IllegalArgumentException("Problem not found"));
+
+                        if(!pUpdate.getDifficulty().equals(node.get("difficulty").asText())){ //We update only if the difficulty or paid tags changed
+                            pUpdate.setDifficulty(node.get("difficulty").asText());
+                        }
+
+                        if(!pUpdate.isPaidOnly() == node.get("paid_only").asBoolean()){
+                            pUpdate.setPaidOnly(node.get("paid_only").asBoolean());
+                        }
+
+                        problemRepository.save(pUpdate);
+                    }
+                }
+                problemRepository.saveAll(problems);
+                System.out.println("Problems have been refreshed");
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -61,13 +87,33 @@ public class ProblemService {
         return problemRepository.findAll();
     }
 
-    public List<Problem> createLeetcodeSet(){
-        //TODO : Manage the logic of create LeetcodeSet based on difficulty
+    public List<Problem> createLeetcodeSet(String difficulty, long endTimeDays){
+        //TODO : Manage the logic of create LeetcodeSet based on difficulty and time
+
+        int cantProblems = 0; //First we SetUp the cant of Problems that we need
+        if(endTimeDays >= 1 && endTimeDays <= 5){
+            cantProblems = 6;
+        }
+        else if(endTimeDays >= 6 && endTimeDays <= 14){
+            cantProblems = 10;
+        }
+        else if(endTimeDays >= 15 && endTimeDays <= 21){
+            cantProblems = 14;
+        }
+        else if(endTimeDays >= 22 && endTimeDays <= 31){
+            cantProblems = 18;
+        }
+
+        //Now in this accordly to the cant Of Problems , we select the cant of each actegory, bedofre make the random search
+        int cantEasy = 0;
+        int cantMedium = 0;
+        int cantHard = 0;
+
         return null;
     }
 
-    //Post Methods
 
+    //Post Methods
     public Problem addNewProblem(Problem problem) {
         Problem newProblem = new Problem();
 

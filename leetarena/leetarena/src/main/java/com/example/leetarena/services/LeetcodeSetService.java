@@ -2,10 +2,13 @@ package com.example.leetarena.services;
 
 import com.example.leetarena.models.LeetcodeSet;
 import com.example.leetarena.dtos.LeetcodeSetDTO;
+import com.example.leetarena.models.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.leetarena.repositories.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +16,12 @@ import java.util.Optional;
 public class LeetcodeSetService {
 
     private final LeetcodeSetRepository leetcodeSetRepository;
+    private final ProblemService problemService; //From here we select the problems for the
 
     @Autowired
-    public LeetcodeSetService(LeetcodeSetRepository leetcodeSetRepository) {
+    public LeetcodeSetService(LeetcodeSetRepository leetcodeSetRepository, ProblemService problemService) {
         this.leetcodeSetRepository = leetcodeSetRepository;
+        this.problemService = problemService;
     }
 
     public List<LeetcodeSet> getAllLeetcodeSets() {
@@ -29,13 +34,30 @@ public class LeetcodeSetService {
                 ));
     }
 
-    public LeetcodeSet createLeetcodeSet(LeetcodeSet leetcodeSet) {
+    public LeetcodeSet createLeetcodeSet(String difficulty, LocalDateTime endTime) {
+        long days = totalDays(endTime);
 
-        if(leetcodeSet.getProblemsList().isEmpty()) {
-            throw new IllegalArgumentException("No problems provided");
+        if(days <= 0 || days > 31){ //If the time its not goot, we return a exception
+            throw new RuntimeException("LeetcodeSet time duration has to be greater than 0 days or less than 31 days");
         }
 
-        return leetcodeSetRepository.save(leetcodeSet);
+        List<Problem> problemsSelected = problemService.createLeetcodeSet(difficulty, days);
+        LeetcodeSet leetcodeSet = new LeetcodeSet();
+        leetcodeSet.setProblemsList(problemsSelected);
+        leetcodeSetRepository.save(leetcodeSet);
+        return leetcodeSet;
+    }
+
+    //Extra method, NOT HTTP REQUEST OR ENDPOINT
+    public long totalDays(LocalDateTime endTime){ //Method for calculate teh total time of match in days
+        LocalDateTime current = LocalDateTime.now();
+
+        if(!endTime.isBefore(current)){
+            long diff = ChronoUnit.DAYS.between(current,endTime); //We use ChronoUnit to get the fullDays betwaen
+            return (int) diff;
+        }
+
+        return -1; //We return -1 if the date was not provided well.
     }
 
     public LeetcodeSet updateLeetcodeSet(Integer id, LeetcodeSetDTO dto) {
