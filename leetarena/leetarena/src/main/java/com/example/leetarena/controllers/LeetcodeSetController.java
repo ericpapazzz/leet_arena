@@ -29,10 +29,13 @@ public class LeetcodeSetController {
         return ResponseEntity.ok(leetcodeSetService.getLeetcodeSetById(leetcode_set_id));
     }
 
+    /*
     @PostMapping("/create")
     private ResponseEntity<LeetcodeSet> createLeetcodeSet(@RequestBody LeetcodeSet leetcodeSet) {
         return ResponseEntity.ok(leetcodeSetService.createLeetcodeSet(leetcodeSet));
     }
+
+     */
 
     @PutMapping("/{id}")
     private ResponseEntity<LeetcodeSet> updateLeetcodeSet(@RequestBody LeetcodeSetDTO dto, @RequestParam Integer id) {
