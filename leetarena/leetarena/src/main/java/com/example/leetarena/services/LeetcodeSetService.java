@@ -1,5 +1,6 @@
 package com.example.leetarena.services;
 
+import com.example.leetarena.dtos.CreateLeetcodeSetDTO;
 import com.example.leetarena.models.LeetcodeSet;
 import com.example.leetarena.dtos.LeetcodeSetDTO;
 import com.example.leetarena.models.Problem;
@@ -34,10 +35,13 @@ public class LeetcodeSetService {
                 ));
     }
 
-    public LeetcodeSet createLeetcodeSet(String difficulty, LocalDateTime endTime) {
+    public LeetcodeSet createLeetcodeSet(CreateLeetcodeSetDTO createLeetcodeSetDTO) {
+        String difficulty = createLeetcodeSetDTO.getDifficulty();
+        LocalDateTime endTime = createLeetcodeSetDTO.getEndTime();
+
         long days = totalDays(endTime);
 
-        if(days <= 0 || days > 31){ //If the time its not goot, we return a exception
+        if(days <= 0 || days > 31){ //If the time its not good, we return a exception
             throw new RuntimeException("LeetcodeSet time duration has to be greater than 0 days or less than 31 days");
         }
 

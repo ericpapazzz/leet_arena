@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +45,7 @@ public class ProblemService {
 
             Set<Integer> existingIds = problemRepository.findAll() //In this set we store the currentIds, so in the loop we dont have to iterate each object to find it, making to O(n) to O(1) search complxity
                     .stream()
-                    .map(Problem :: getProblemId)
+                    .map(Problem :: getLeetcode_id)
                     .collect(Collectors.toSet());
 
             if(root.isArray()){
@@ -59,10 +56,11 @@ public class ProblemService {
                         p.setProblemURL(node.get("url").asText());
                         p.setDifficulty(node.get("difficulty").asText());
                         p.setPaidOnly(node.get("paid_only").asBoolean());
+                        p.setLeetcode_id(node.get("id").asInt());
                         problems.add(p);
                     }
                     else{
-                        Problem pUpdate = problemRepository.findById(node.get("id").asInt()).orElseThrow(() -> new IllegalArgumentException("Problem not found"));
+                        Problem pUpdate = problemRepository.findByLeetcode_id(node.get("id").asInt()).orElseThrow(() -> new IllegalArgumentException("Problem not found"));
 
                         if(!pUpdate.getDifficulty().equals(node.get("difficulty").asText())){ //We update only if the difficulty or paid tags changed
                             pUpdate.setDifficulty(node.get("difficulty").asText());
@@ -88,29 +86,124 @@ public class ProblemService {
         return problemRepository.findAll();
     }
 
-    public List<Problem> createLeetcodeSet(String difficulty, long endTimeDays){
-        //TODO : Manage the logic of create LeetcodeSet based on difficulty and time
+    public List<Problem> createLeetcodeSet(String difficulty, long endTimeDays) {
 
         int cantProblems = 0; //First we SetUp the cant of Problems that we need
-        if(endTimeDays >= 1 && endTimeDays <= 5){
+        if (endTimeDays >= 1 && endTimeDays <= 5) {
             cantProblems = 6;
-        }
-        else if(endTimeDays >= 6 && endTimeDays <= 14){
+        } else if (endTimeDays >= 6 && endTimeDays <= 14) {
             cantProblems = 10;
-        }
-        else if(endTimeDays >= 15 && endTimeDays <= 21){
+        } else if (endTimeDays >= 15 && endTimeDays <= 21) {
             cantProblems = 14;
-        }
-        else if(endTimeDays >= 22 && endTimeDays <= 31){
+        } else if (endTimeDays >= 22 && endTimeDays <= 31) {
             cantProblems = 18;
         }
 
-        //Now in this accordly to the cant Of Problems , we select the cant of each actegory, bedofre make the random search
+        //Now in this accordly to the cant Of Problems , we select the cant of each category, before make the random search
         int cantEasy = 0;
         int cantMedium = 0;
         int cantHard = 0;
 
-        return null;
+        //Easy Mode
+        Map<String, Map<Integer, List<Integer>>> mode = new HashMap<>();
+
+        //Problems structure and cant
+        Map<Integer,List<Integer>> problemsSetEasy = new HashMap<>();
+
+        //Make the set of the cant of problems by each cantDays
+        List<Integer> cantProblemsList1 = List.of(3,3,0);
+        List<Integer> cantProblemsList2 = List.of(5,4,1);
+        List<Integer> cantProblemsList3 = List.of(6,7,1);
+        List<Integer> cantProblemsList4 = List.of(8,9,1);
+
+        //Add all the posible combinations in the map
+        problemsSetEasy.put(1,cantProblemsList1);
+        problemsSetEasy.put(2,cantProblemsList2);
+        problemsSetEasy.put(3,cantProblemsList3);
+        problemsSetEasy.put(4,cantProblemsList4);
+
+        mode.put("easy",problemsSetEasy);
+
+        //Medium Mode
+        Map<Integer,List<Integer>> problemsSetMedium = new HashMap<>();
+        List<Integer> cantProblemsList5 = List.of(2,4,0);
+        List<Integer> cantProblemsList6 = List.of(4,5,1);
+        List<Integer> cantProblemsList7 = List.of(4,8,2);
+        List<Integer> cantProblemsList8 = List.of(5,11,2);
+
+        problemsSetMedium.put(1,cantProblemsList5);
+        problemsSetMedium.put(2,cantProblemsList6);
+        problemsSetMedium.put(3,cantProblemsList7);
+        problemsSetMedium.put(4,cantProblemsList8);
+
+        mode.put("medium", problemsSetMedium);
+
+        //Hard Mode
+        Map<Integer,List<Integer>> problemsSetHard = new HashMap<>();
+        List<Integer> cantProblemsList9 = List.of(2,3,1);
+        List<Integer> cantProblemsList10 = List.of(2,6,2);
+        List<Integer> cantProblemsList11 = List.of(2,9,3);
+        List<Integer> cantProblemsList12 = List.of(2,12,4);
+
+        problemsSetHard.put(1,cantProblemsList9);
+        problemsSetHard.put(2,cantProblemsList10);
+        problemsSetHard.put(3,cantProblemsList11);
+        problemsSetHard.put(4,cantProblemsList12);
+
+        mode.put("hard", problemsSetHard);
+
+        //Now we can select the cant for each category based on the hashmap conditions and the difficulty and timedays
+
+        //Check if the difficulty is a valid option
+        Set<String> options = new HashSet<>(Arrays.asList("easy","medium","hard"));
+
+        if(!options.contains(difficulty)){
+            throw new IllegalArgumentException("Difficulty must be easy, medium or hard");
+        }
+
+        //Define the mode
+        Map<Integer,List<Integer>> matchMode = mode.get(difficulty);
+
+        List<Integer> tempCants = null;
+        if(cantProblems == 6){
+            tempCants = matchMode.get(1);
+        }
+        else if(cantProblems == 10){
+            tempCants = matchMode.get(2);
+        }
+        else if(cantProblems == 14){
+            tempCants = matchMode.get(3);
+        }
+        else if(cantProblems == 18){
+            tempCants = matchMode.get(4);
+        }
+        else{
+            throw new IllegalArgumentException("There is an invalid cantProblems, select a different time duration");
+        }
+
+        cantEasy = tempCants.get(0);
+        cantMedium = tempCants.get(1);
+        cantHard = tempCants.get(2);
+
+        //Now we can make the random funtion to get the problems from the database
+
+        List<Problem> listProblemsSet = new ArrayList<>();
+
+        float r1 = (float) Math.random();
+        float r2 = (float) Math.random();
+        float r3 = (float) Math.random();
+
+        List<Problem> easyOnes = problemRepository.getProblemsByDifficulty("easy",cantEasy,r1);
+
+        List<Problem> mediumOnes = problemRepository.getProblemsByDifficulty("medium", cantMedium,r2);
+
+        List<Problem> hardOnes = problemRepository.getProblemsByDifficulty("hard", cantHard,r3);
+
+        listProblemsSet.addAll(easyOnes);
+        listProblemsSet.addAll(mediumOnes);
+        listProblemsSet.addAll(hardOnes);
+
+        return listProblemsSet;
     }
 
 
