@@ -50,14 +50,16 @@ public class ProblemService {
 
             if(root.isArray()){
                 for(JsonNode node : root){
-                    if(!existingIds.contains(node.get("id").asInt())){ //If there a new Problem we add it to the problems stack
-                        Problem p = new Problem();
-                        p.setProblemTitle(node.get("title").asText());
-                        p.setProblemURL(node.get("url").asText());
-                        p.setDifficulty(node.get("difficulty").asText());
-                        p.setPaidOnly(node.get("paid_only").asBoolean());
-                        p.setLeetcode_id(node.get("id").asInt());
-                        problems.add(p);
+                    if(!existingIds.contains(node.get("id").asInt())){ //If there a new Problem we add it to the problems stac
+                        if(!node.get("paid_only").asBoolean()){ //If the problem is paid we skip it
+                            Problem p = new Problem();
+                            p.setProblemTitle(node.get("title").asText());
+                            p.setProblemURL(node.get("url").asText());
+                            p.setDifficulty(node.get("difficulty").asText());
+                            p.setPaidOnly(node.get("paid_only").asBoolean());
+                            p.setLeetcode_id(node.get("id").asInt());
+                            problems.add(p);
+                        }
                     }
                     else{
                         Problem pUpdate = problemRepository.findByLeetcode_id(node.get("id").asInt()).orElseThrow(() -> new IllegalArgumentException("Problem not found"));
