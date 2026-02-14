@@ -3,8 +3,6 @@ package com.example.leetarena.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 @Table(name = "party_summarys")
@@ -18,7 +16,7 @@ public class Summary {
     private String summaryDescription;
 
     @OneToOne
-    private ActiveParty activeParty;
+    private Party party;
 
     /*
     @OneToMany

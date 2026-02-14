@@ -1,5 +1,6 @@
 package com.example.leetarena.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -25,23 +26,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer user_id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
 
-    @Column(name = "user_password_hash", nullable = false)
-    private String userPasswordHash;
-
     @Column(name = "user_leetcoins")
     private int userLeetcoins;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Record> records = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Player> players = new ArrayList<>();
 
     @ManyToMany
@@ -50,6 +48,6 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    @JsonManagedReference
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 }

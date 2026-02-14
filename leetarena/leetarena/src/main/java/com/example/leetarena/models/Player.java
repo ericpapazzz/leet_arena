@@ -40,10 +40,10 @@ public class Player {
 
     @ManyToMany
     @JoinTable(
-    name = "player_active_party",
+    name = "player_party",
     joinColumns = @JoinColumn(name = "player_id"),
-    inverseJoinColumns = @JoinColumn(name = "active_party_id")
+    inverseJoinColumns = @JoinColumn(name = "party_id")
 )
-private List<ActiveParty> activePartys;
+private List<Party> parties;
 
 }
