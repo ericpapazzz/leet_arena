@@ -13,9 +13,9 @@ import java.util.List;
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
 
     @Query(value = "SELECT p FROM Player p WHERE p.user.user_id = :user_id")
-    List<Player> getPlayersByUserId(@Param("user_id") int userId);
+    List<Player> getPlayersByUserId(@Param("user_id") Integer userId);
     
     @Modifying
     @Query(value = "DELETE FROM Player p WHERE p.user.user_id = :user_id")
-    void deletePlayersByUserId(@Param("user_id") int userId);
+    void deletePlayersByUserId(@Param("user_id") Integer userId);
 }
