@@ -1,5 +1,6 @@
 package com.example.leetarena.controllers;
 
+import com.example.leetarena.dtos.CreateLeetcodeSetDTO;
 import com.example.leetarena.models.LeetcodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.leetarena.services.LeetcodeSetService;
 import com.example.leetarena.dtos.LeetcodeSetDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,13 +31,11 @@ public class LeetcodeSetController {
         return ResponseEntity.ok(leetcodeSetService.getLeetcodeSetById(leetcode_set_id));
     }
 
-    /*
     @PostMapping("/create")
-    private ResponseEntity<LeetcodeSet> createLeetcodeSet(@RequestBody LeetcodeSet leetcodeSet) {
-        return ResponseEntity.ok(leetcodeSetService.createLeetcodeSet(leetcodeSet));
+    private ResponseEntity<LeetcodeSet> createLeetcodeSet(@RequestBody CreateLeetcodeSetDTO createLeetcodeSetDTO) {
+        return ResponseEntity.ok(leetcodeSetService.createLeetcodeSet(createLeetcodeSetDTO));
     }
 
-     */
 
     @PutMapping("/{id}")
     private ResponseEntity<LeetcodeSet> updateLeetcodeSet(@RequestBody LeetcodeSetDTO dto, @RequestParam Integer id) {

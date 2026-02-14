@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import com.example.leetarena.dtos.UserDTO;
 
 @RestController
-@RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:8080")
+@RequestMapping("api/v1/users")
+//@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     @Autowired
     private  UserService userService;
@@ -46,6 +46,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.createUser(dto));
         } catch (RuntimeException e) {
+            System.out.println("Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(null);
         }
     }

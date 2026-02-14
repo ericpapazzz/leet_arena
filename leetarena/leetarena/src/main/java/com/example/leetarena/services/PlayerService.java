@@ -52,13 +52,6 @@ public class PlayerService {
     public Player updatePlayer(Integer id, PlayerDTO dto){
         Player existingPlayer = getPlayerById(id);
 
-        // if data is not provided,stay with existing data
-        if (dto.getPlayerUsername() != null){
-            existingPlayer.setPlayerUsername(dto.getPlayerUsername());
-        }else{
-            existingPlayer.setPlayerUsername((existingPlayer.getPlayerUsername()));
-        }
-
         return playerRepository.save(existingPlayer);
     }
 

@@ -8,9 +8,10 @@ import com.example.leetarena.models.User;
 import com.example.leetarena.repositories.UserRepository;
 import com.example.leetarena.repositories.RecordRepository;
 import com.example.leetarena.repositories.PlayerRepository;
-import com.example.leetarena.repositories.ActivePartyRepository;
+import com.example.leetarena.repositories.PartyRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -18,16 +19,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final RecordRepository recordRepository;
     private final PlayerRepository playerRepository;
-    private final ActivePartyRepository activePartyRepository;
+    private final PartyRepository partyRepository;
 
     public UserService(UserRepository userRepository, 
                       RecordRepository recordRepository,
                       PlayerRepository playerRepository,
-                      ActivePartyRepository activePartyRepository) {
+                      PartyRepository partyRepository) {
         this.userRepository = userRepository;
         this.recordRepository = recordRepository;
         this.playerRepository = playerRepository;
-        this.activePartyRepository = activePartyRepository;
+        this.partyRepository = partyRepository;
     }
 
     public List<User> getAllUsers() {
@@ -41,15 +42,11 @@ public class UserService {
 
     public User createUser(UserDTO dto) {
         User newUser = new User();
-        newUser.setUsername(dto.getUsername());
+
         newUser.setUserEmail(dto.getEmail());
-        newUser.setUserPasswordHash(dto.getPasswordHash());
         newUser.setUserLeetcoins(0);
 
-        // Check if username or email already exists
-        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists");
-        }
+        // Check if email already exists
         if (userRepository.findByUserEmail(dto.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
@@ -57,25 +54,29 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
+
+    //Todo function to add leetcoins when a user wins
+    public void addLeetcoins(Integer user_id, int leetcoins){
+        Optional<User> user = userRepository.findById(user_id);
+
+        if(!user.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User curr_user = user.get();
+        curr_user.setUserLeetcoins(user.get().getUserLeetcoins() + leetcoins);
+
+        userRepository.save(curr_user);
+    }
+
     public User updateUser(Integer id, UserDTO dto) {
         User existingUser = getUserById(id);
         // if data is not provided, stay with existing data
-        if (dto.getUsername() != null) {
-            existingUser.setUsername(dto.getUsername());
-        }else{
-            existingUser.setUsername(existingUser.getUsername());
-        }
 
         if (dto.getEmail() != null) {
             existingUser.setUserEmail(dto.getEmail());
         }else{
             existingUser.setUserEmail(existingUser.getUserEmail());
-        }
-
-        if (dto.getPasswordHash() != null) {
-            existingUser.setUserPasswordHash(dto.getPasswordHash());
-        }else{
-            existingUser.setUserPasswordHash(existingUser.getUserPasswordHash());
         }
 
         return userRepository.save(existingUser);
@@ -101,7 +102,7 @@ public class UserService {
             playerRepository.deletePlayersByUserId(userId);
             
             // delete all active parties associated with the user
-            activePartyRepository.deleteActivePartiesByUserId(userId);
+            partyRepository.deleteActivePartiesByUserId(userId);
             
             // Note: Products relationship is Many-to-Many, so we don't need to delete products
             // The relationship will be automatically removed when the user is deleted

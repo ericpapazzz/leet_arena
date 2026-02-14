@@ -22,10 +22,9 @@ public class Record {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "active_party_id")
-    private ActiveParty activeParty;
+    @JoinColumn(name = "party_id")
+    private Party party;
 }

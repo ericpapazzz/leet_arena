@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Data
-@Table(name = "active_partys")
-public class ActiveParty {
+@Table(name = "partys")
+public class Party {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty("active_party_id")
-    private Integer active_party_id;
+    @JsonProperty("party_id")
+    private Integer party_id;
 
     @Column(name = "party_difficulty")
     private String partyDifficulty;
@@ -32,13 +32,16 @@ public class ActiveParty {
     @Column(name = "party_prize")
     private String partyPrize;
 
-    @Column(name = "party_players_list")
-    private List<String> partyPlayersList;
-
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @OneToMany(mappedBy = "activeParty")
+    @Column(name = "party_status")
+    private String party_status;
+
+    @Column(name = "invitation_code", unique = true)
+    private String invitation_code;
+
+    @OneToMany(mappedBy = "party")
     private List<Record> records;
 
     @OneToOne
@@ -49,7 +52,7 @@ public class ActiveParty {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "activePartys")
+    @ManyToMany(mappedBy = "parties")
     private List<Player> players;
 
     @OneToOne
