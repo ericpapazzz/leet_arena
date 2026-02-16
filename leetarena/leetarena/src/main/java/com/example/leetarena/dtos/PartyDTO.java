@@ -12,5 +12,5 @@ public class PartyDTO {
     private String difficulty;
     private String partyPrize;
     private LocalDateTime endTime;
-    private List<PlayerDTO> players;
+    //private List<PlayerDTO> players; With the invitation code this is not necesary anymore
 }
