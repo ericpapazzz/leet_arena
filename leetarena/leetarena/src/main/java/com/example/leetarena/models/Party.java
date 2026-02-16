@@ -1,18 +1,11 @@
 package com.example.leetarena.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -52,8 +45,13 @@ public class Party {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "parties")
-    private List<Player> players;
+    @ManyToMany
+    @JoinTable(
+            name = "player_party",
+            joinColumns = @JoinColumn(name = "player_id"),
+            inverseJoinColumns = @JoinColumn(name = "party_id")
+    )
+    private List<Player> players = new ArrayList<>();
 
     @OneToOne
     private Summary summary;

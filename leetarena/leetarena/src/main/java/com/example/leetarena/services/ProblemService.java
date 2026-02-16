@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class ProblemService {
 
-    //TODO: Implement a HashMap to store the values of the cantEasy,Medium and hard problems for the creation of the leetcodeSet
-
     private final ProblemRepository problemRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;

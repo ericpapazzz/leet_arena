@@ -12,5 +12,5 @@ public class PartyDTO {
     private String difficulty;
     private String partyPrize;
     private LocalDateTime endTime;
-    private List<Player> players;
+    private List<PlayerDTO> players;
 }
