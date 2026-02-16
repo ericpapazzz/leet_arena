@@ -13,7 +13,7 @@ import com.example.leetarena.services.PartyService;
 
 
 @RestController
-@RequestMapping("/partys")
+@RequestMapping("/api/v1/partys")
 @CrossOrigin(origins = "http://localhost:8080")
 public class PartyController {
 
@@ -49,6 +49,15 @@ public class PartyController {
         try{
             return ResponseEntity.ok(partyService.completeParty(dto));
         }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/completeParty/newPlayer")
+    public ResponseEntity<?> addNewPlayerToWaitingParty(@RequestParam Integer user_id, @RequestParam String invitation_code){
+        try{
+            return ResponseEntity.ok(partyService.addNewPlayerToWaitingParty(user_id, invitation_code));
+        } catch(RuntimeException e){
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
