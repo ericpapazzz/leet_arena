@@ -1,6 +1,9 @@
 package com.example.leetarena.services;
 
+import com.example.leetarena.dtos.PlayerDTO;
+import com.example.leetarena.models.Player;
 import com.example.leetarena.models.User;
+import com.example.leetarena.repositories.PlayerRepository;
 import com.example.leetarena.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +14,7 @@ import com.example.leetarena.models.Party;
 import com.example.leetarena.repositories.PartyRepository;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,12 +23,14 @@ public class PartyService {
 
     private final PartyRepository partyRepository;
     private final UserRepository userRepository;
+    private final PlayerService playerService;
     private static final SecureRandom random = new SecureRandom();
 
     @Autowired
-    public PartyService(PartyRepository partyRepository, UserRepository userRepository) {
+    public PartyService(PartyRepository partyRepository, UserRepository userRepository, PlayerService playerService) {
         this.partyRepository = partyRepository;
         this.userRepository = userRepository;
+        this.playerService = playerService;
     }
 
     public List<Party> getAllPartys() {
@@ -56,6 +62,19 @@ public class PartyService {
 
         }
 
+        PlayerDTO newPlayer = new PlayerDTO();
+        newPlayer.setPlayerUsername(admin_party.get().getUsername());
+        newPlayer.setUserId(admin_id);
+
+        Player adminPlayer = playerService.createPlayer(newPlayer);
+
+        if(adminPlayer == null){
+            throw new IllegalArgumentException("The player wasnt created correctly");
+        }
+
+        List<Player> players = new ArrayList<>();
+        players.add(adminPlayer);
+        party.setPlayers(players);
         party.setParty_status("WAITING");
         return partyRepository.save(party);
 
@@ -73,15 +92,33 @@ public class PartyService {
             throw new IllegalArgumentException("This party was already completed");
         }
 
-        if(curr_party.getPlayers().isEmpty()){
-            throw new IllegalArgumentException("There are no players in this party");
-        }
+        System.out.println(curr_party.getPlayers().getClass());
+
 
         //Before creating the party, we have to associated to the host_user
         curr_party.setPartyDifficulty(dto.getDifficulty());
         curr_party.setPartyPrize(dto.getPartyPrize());
         curr_party.setEndTime(dto.getEndTime());
-        curr_party.setPlayers(dto.getPlayers()); //TODO Extra - Verification fo the profiles
+
+        for(PlayerDTO playerDTO : dto.getPlayers()){
+            Player newPlayer = playerService.createPlayer(playerDTO);
+
+
+            if(newPlayer == null){
+                throw new IllegalArgumentException("The player wasnt created correctly");
+            }
+
+            System.out.println(newPlayer.getPlayerUsername());
+            System.out.println(newPlayer.getPlayer_id());
+            newPlayer.getParties().add(curr_party);
+            curr_party.getPlayers().add(newPlayer);
+        }
+
+        System.out.println(curr_party.getPlayers().size());
+        if(curr_party.getPlayers().isEmpty() || curr_party.getPlayers().size() < 3){
+            throw new IllegalArgumentException("There are no players enough in this party");
+        }
+
         curr_party.setParty_status("ACTIVATED");
         return partyRepository.save(curr_party);
     }

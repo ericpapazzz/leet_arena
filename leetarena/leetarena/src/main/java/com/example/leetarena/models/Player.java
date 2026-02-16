@@ -1,5 +1,6 @@
 package com.example.leetarena.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,14 +39,11 @@ public class Player {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-    name = "player_party",
-    joinColumns = @JoinColumn(name = "player_id"),
-    inverseJoinColumns = @JoinColumn(name = "party_id")
-)
-private List<Party> parties;
+    @ManyToMany(mappedBy = "players")
+    @JsonIgnore
+    private List<Party> parties = new ArrayList<>();
 
 }

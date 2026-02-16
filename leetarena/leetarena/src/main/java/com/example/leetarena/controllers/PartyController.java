@@ -1,6 +1,7 @@
 package com.example.leetarena.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,20 +36,20 @@ public class PartyController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Party> createPartyDefault(@RequestParam Integer admin_id) {
+    public ResponseEntity<?> createPartyDefault(@RequestParam Integer admin_id) {
         try {
             return ResponseEntity.ok(partyService.createPartyDefault(admin_id));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
     @PostMapping("/completeParty")
-    public ResponseEntity<Party> completeParty(@RequestBody PartyDTO dto) {
+    public ResponseEntity<?> completeParty(@RequestBody PartyDTO dto) {
         try{
             return ResponseEntity.ok(partyService.completeParty(dto));
         }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
