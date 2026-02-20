@@ -32,6 +32,12 @@ public class User {
     @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
 
+    @Column(name = "user_avatar")
+    private String userAvatar;
+
+    @Column(name = "leet_rank")
+    private Long leetRank;
+
     @Column(name = "user_leetcoins")
     private int userLeetcoins;
 

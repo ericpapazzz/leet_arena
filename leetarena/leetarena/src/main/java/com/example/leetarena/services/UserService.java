@@ -1,5 +1,10 @@
 package com.example.leetarena.services;
 
+import com.example.leetarena.dtos.LeetcodeProfileDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +14,7 @@ import com.example.leetarena.repositories.UserRepository;
 import com.example.leetarena.repositories.RecordRepository;
 import com.example.leetarena.repositories.PlayerRepository;
 import com.example.leetarena.repositories.PartyRepository;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,15 +26,20 @@ public class UserService {
     private final RecordRepository recordRepository;
     private final PlayerRepository playerRepository;
     private final PartyRepository partyRepository;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
-    public UserService(UserRepository userRepository, 
-                      RecordRepository recordRepository,
-                      PlayerRepository playerRepository,
-                      PartyRepository partyRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository,
+                       RecordRepository recordRepository,
+                       PlayerRepository playerRepository,
+                       PartyRepository partyRepository) {
         this.userRepository = userRepository;
         this.recordRepository = recordRepository;
         this.playerRepository = playerRepository;
         this.partyRepository = partyRepository;
+        this.restTemplate = new RestTemplate();
+        this.objectMapper = new ObjectMapper();
     }
 
     public List<User> getAllUsers() {
@@ -51,7 +62,51 @@ public class UserService {
             throw new RuntimeException("Email already exists");
         }
 
+        LeetcodeProfileDTO profileDTO = validateLeetcodeAccount(dto.getUsername());
+        newUser.setUsername(profileDTO.getUsername());
+        newUser.setUserAvatar(profileDTO.getUserAvatar());
+        newUser.setLeetRank(profileDTO.getLeetRank());
+
         return userRepository.save(newUser);
+    }
+
+    public LeetcodeProfileDTO validateLeetcodeAccount(String leetcode_username){
+        //1. Check if is not already register
+        Optional<User> temp_user = userRepository.findByUsername(leetcode_username);
+        if(temp_user.isPresent()){
+            throw new IllegalArgumentException("This user already exits in the database");
+        }
+
+        //2. Call the LeetcodeAPI to find it
+        String url = "https://leetcode-api-pied.vercel.app/user/" + leetcode_username;
+        String response = restTemplate.getForObject(url, String.class);
+        LeetcodeProfileDTO newLeetcodeProfileDTO = new LeetcodeProfileDTO();
+
+        try {
+            JsonNode root = objectMapper.readTree(response);
+            if(root.has("detail")){
+                throw new IllegalArgumentException("The user wasnt find it in the leetcode DB");
+            }
+
+            if(root.has("username")){
+                newLeetcodeProfileDTO.setUsername(root.get("username").asText());
+            }
+
+            JsonNode profile = root.get("profile");
+
+            if(profile.has("userAvatar")){
+                newLeetcodeProfileDTO.setUserAvatar(profile.get("userAvatar").asText());
+            }
+
+            if(profile.has("ranking")){
+                newLeetcodeProfileDTO.setLeetRank(profile.get("ranking").asLong());
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return newLeetcodeProfileDTO;
     }
 
 
